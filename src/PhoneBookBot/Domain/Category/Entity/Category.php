@@ -6,6 +6,7 @@ namespace Sersid\PhoneBookBot\Domain\Category\Entity;
 use Sersid\PhoneBookBot\Domain\Category\Event;
 use Sersid\Shared\AggregateRoot;
 use Sersid\Shared\EventTrait;
+use Sersid\PhoneBookBot\Domain\Contact\Entity\Status;
 use Sersid\Shared\ValueObject\Uuid;
 
 final class Category implements AggregateRoot
@@ -33,16 +34,6 @@ final class Category implements AggregateRoot
     public function getStatus(): Status
     {
         return $this->status;
-    }
-
-    public function isEnable(): bool
-    {
-        return $this->status->isEnable();
-    }
-
-    public function isDisable(): bool
-    {
-        return $this->status->isDisable();
     }
 
     public function rename(Name $name): void

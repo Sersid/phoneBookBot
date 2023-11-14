@@ -8,14 +8,12 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Category;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Name;
-use Sersid\PhoneBookBot\Domain\Category\Entity\Status;
+use Sersid\PhoneBookBot\Domain\Contact\Entity\Status;
 use Sersid\PhoneBookBot\Domain\Category\Event;
 use Sersid\Shared\ValueObject\Uuid;
-use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertInstanceOf;
 use function PHPUnit\Framework\assertNotSame;
 use function PHPUnit\Framework\assertSame;
-use function PHPUnit\Framework\assertTrue;
 
 /**
  * @covers Category
@@ -34,8 +32,6 @@ final class CategoryTest extends TestCase
         assertSame($uuid, $category->getUuid());
         assertSame($name, $category->getName());
         assertSame(Status::Enable, $category->getStatus());
-        assertTrue($category->isEnable());
-        assertFalse($category->isDisable());
 
         return $category;
     }
@@ -90,8 +86,7 @@ final class CategoryTest extends TestCase
     {
         $category->disable();
 
-        assertFalse($category->isEnable());
-        assertTrue($category->isDisable());
+        assertSame(Status::Disable, $category->getStatus());
 
         return $category;
     }
@@ -123,8 +118,7 @@ final class CategoryTest extends TestCase
     {
         $category->enable();
 
-        assertTrue($category->isEnable());
-        assertFalse($category->isDisable());
+        assertSame(Status::Enable, $category->getStatus());
 
         return $category;
     }
