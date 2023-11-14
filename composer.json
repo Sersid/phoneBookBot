@@ -13,7 +13,8 @@
     "php": "^8.2",
     "slim/slim": "^4.12",
     "slim/psr7": "^1.6",
-    "ramsey/uuid": "^4.7"
+    "ramsey/uuid": "^4.7",
+    "webmozart/assert": "^1.11"
   }
   ,
   "require-dev": {
@@ -22,7 +23,7 @@
   },
   "autoload": {
     "psr-4": {
-      "PhoneBookBot\\": "src/"
+      "Sersid\\": "src/"
     }
   },
   "autoload-dev": {
