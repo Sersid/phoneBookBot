@@ -3,10 +3,7 @@ declare(strict_types=1);
 
 namespace Sersid\PhoneBookBot\Domain\Category\Entity;
 
-use Sersid\PhoneBookBot\Domain\Category\Event\CategoryCreatedEvent;
-use Sersid\PhoneBookBot\Domain\Category\Event\CategoryDisabledEvent;
-use Sersid\PhoneBookBot\Domain\Category\Event\CategoryEnabledEvent;
-use Sersid\PhoneBookBot\Domain\Category\Event\CategoryRenamedEvent;
+use Sersid\PhoneBookBot\Domain\Category\Event;
 use Sersid\Shared\AggregateRoot;
 use Sersid\Shared\EventTrait;
 use Sersid\Shared\ValueObject\Uuid;
@@ -20,7 +17,7 @@ final class Category implements AggregateRoot
         private Name $name,
         private Status $status = Status::Enable
     ) {
-        $this->recordEvent(new CategoryCreatedEvent($this));
+        $this->recordEvent(new Event\CategoryCreatedEvent($this));
     }
 
     public function getUuid(): Uuid
@@ -54,7 +51,7 @@ final class Category implements AggregateRoot
             return;
         }
 
-        $this->recordEvent(new CategoryRenamedEvent($this, $this->name));
+        $this->recordEvent(new Event\CategoryRenamedEvent($this, $this->name));
         $this->name = $name;
     }
 
@@ -64,7 +61,7 @@ final class Category implements AggregateRoot
             return;
         }
 
-        $this->recordEvent(new CategoryDisabledEvent($this, $this->status));
+        $this->recordEvent(new Event\CategoryDisabledEvent($this, $this->status));
         $this->status = Status::Disable;
     }
 
@@ -74,7 +71,7 @@ final class Category implements AggregateRoot
             return;
         }
 
-        $this->recordEvent(new CategoryEnabledEvent($this, $this->status));
+        $this->recordEvent(new Event\CategoryEnabledEvent($this, $this->status));
         $this->status = Status::Enable;
     }
 }

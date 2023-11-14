@@ -5,16 +5,12 @@ namespace Tests\PhoneBookBot\Domain\Category\Entity;
 
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\TestDox;
-use Sersid\PhoneBookBot\Domain\Category\Entity\Category;
 use PHPUnit\Framework\TestCase;
+use Sersid\PhoneBookBot\Domain\Category\Entity\Category;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Name;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Status;
-use Sersid\PhoneBookBot\Domain\Category\Event\CategoryCreatedEvent;
-use Sersid\PhoneBookBot\Domain\Category\Event\CategoryDisabledEvent;
-use Sersid\PhoneBookBot\Domain\Category\Event\CategoryEnabledEvent;
-use Sersid\PhoneBookBot\Domain\Category\Event\CategoryRenamedEvent;
+use Sersid\PhoneBookBot\Domain\Category\Event;
 use Sersid\Shared\ValueObject\Uuid;
-use function PHPUnit\Framework\assertEmpty;
 use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertInstanceOf;
 use function PHPUnit\Framework\assertNotSame;
@@ -50,7 +46,7 @@ final class CategoryTest extends TestCase
     {
         $events = $category->releaseEvents();
 
-        assertInstanceOf(CategoryCreatedEvent::class, end($events));
+        assertInstanceOf(Event\CategoryCreatedEvent::class, end($events));
     }
 
     #[TestDox('Тест попытки переименовать категорию в то же название')]
@@ -83,7 +79,7 @@ final class CategoryTest extends TestCase
     {
         $events = $category->releaseEvents();
 
-        assertInstanceOf(CategoryRenamedEvent::class, end($events));
+        assertInstanceOf(Event\CategoryRenamedEvent::class, end($events));
 
         return $category;
     }
@@ -106,7 +102,7 @@ final class CategoryTest extends TestCase
     {
         $events = $category->releaseEvents();
 
-        assertInstanceOf(CategoryDisabledEvent::class, end($events));
+        assertInstanceOf(Event\CategoryDisabledEvent::class, end($events));
 
         return $category;
     }
@@ -139,7 +135,7 @@ final class CategoryTest extends TestCase
     {
         $events = $category->releaseEvents();
 
-        assertInstanceOf(CategoryEnabledEvent::class, end($events));
+        assertInstanceOf(Event\CategoryEnabledEvent::class, end($events));
 
         return $category;
     }
