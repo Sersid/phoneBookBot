@@ -12,7 +12,8 @@
   "require": {
     "php": "^8.2",
     "slim/slim": "^4.12",
-    "slim/psr7": "^1.6"
+    "slim/psr7": "^1.6",
+    "ramsey/uuid": "^4.7"
   }
   ,
   "require-dev": {
@@ -21,7 +22,7 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "src/"
+      "PhoneBookBot\\": "src/"
     }
   },
   "autoload-dev": {
