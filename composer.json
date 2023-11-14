@@ -19,7 +19,8 @@
   ,
   "require-dev": {
     "roave/security-advisories": "dev-latest",
-    "phpunit/phpunit": "^10.4"
+    "phpunit/phpunit": "^10.4",
+    "vimeo/psalm": "^5.15"
   },
   "autoload": {
     "psr-4": {
