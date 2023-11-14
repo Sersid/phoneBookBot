@@ -60,7 +60,7 @@ final class CategoryTest extends TestCase
         assertNotSame($name, $category->getName());
     }
 
-    #[TestDox('Тест переименования категорию')]
+    #[TestDox('Тест переименования категории')]
     #[Depends('testCreate')]
     public function testRename(Category $category): Category
     {
