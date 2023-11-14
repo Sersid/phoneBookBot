@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Sersid\Shared\ValueObject;
 
-use Sersid\Shared\ValueObject\StringValueObject;
 use Webmozart\Assert\Assert;
 
 abstract class Name extends StringValueObject

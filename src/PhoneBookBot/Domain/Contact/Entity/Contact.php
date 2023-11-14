@@ -11,8 +11,11 @@ use Sersid\Shared\ValueObject\Uuid;
 final class Contact implements AggregateRoot
 {
     use EventTrait;
-    public function __construct(private readonly Uuid $uuid, private readonly Name $name, private readonly Status $status = Status::Enable)
-    {
+    public function __construct(
+        private readonly Uuid $uuid,
+        private readonly Name $name,
+        private readonly Status $status = Status::Enable
+    ) {
         $this->recordEvent(new ContactCreatedEvent($this));
     }
 
