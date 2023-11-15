@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Sersid\Shared\ValueObject;
 
-abstract class StringValueObject
+abstract readonly class StringValueObject
 {
     public function __construct(protected string $value)
     {

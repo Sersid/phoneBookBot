@@ -6,7 +6,7 @@ namespace Sersid\PhoneBookBot\Domain\Contact\Entity;
 use Sersid\Shared\ValueObject\StringValueObject;
 use Webmozart\Assert\Assert;
 
-final class Phone extends StringValueObject
+final readonly class Phone extends StringValueObject
 {
     public function __construct(string $value)
     {

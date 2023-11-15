@@ -5,7 +5,7 @@ namespace Sersid\Shared\ValueObject;
 
 use Webmozart\Assert\Assert;
 
-final class Uuid extends StringValueObject
+final readonly class Uuid extends StringValueObject
 {
     public function __construct(string $value)
     {

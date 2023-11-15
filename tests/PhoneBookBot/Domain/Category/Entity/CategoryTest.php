@@ -27,7 +27,7 @@ final class CategoryTest extends TestCase
         $name = new Name('Управляющая компания');
         $status = Status::Enable;
 
-        $category = new Category($uuid, $name, $status);
+        $category = new Category(uuid: $uuid, name: $name, status: $status);
 
         assertSame($uuid, $category->getUuid());
         assertSame($name, $category->getName());

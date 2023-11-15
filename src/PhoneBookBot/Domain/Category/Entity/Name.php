@@ -5,6 +5,6 @@ namespace Sersid\PhoneBookBot\Domain\Category\Entity;
 
 use Sersid\Shared\ValueObject\Name as SharedName;
 
-final class Name extends SharedName
+final readonly class Name extends SharedName
 {
 }
