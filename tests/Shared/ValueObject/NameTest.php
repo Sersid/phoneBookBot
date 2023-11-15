@@ -3,17 +3,16 @@ declare(strict_types=1);
 
 namespace Tests\Shared\ValueObject;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\TestWith;
 use Sersid\Shared\ValueObject\Name;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers Name
- */
+#[CoversClass(Name::class)]
+#[TestDox('Тесты названия')]
 final class NameTest extends TestCase
 {
-
     #[TestDox('Тест некорректного названия категории: "$value"')]
     #[TestWith([''])]
     #[TestWith([' '])]

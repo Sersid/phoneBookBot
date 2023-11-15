@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\PhoneBookBot\Domain\Contact\Entity;
 
-use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Category;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Name as CategoryName;
 use Sersid\PhoneBookBot\Domain\Contact\Entity\Contact;
@@ -16,58 +16,66 @@ use Sersid\Shared\ValueObject\Uuid;
 use function PHPUnit\Framework\assertInstanceOf;
 use function PHPUnit\Framework\assertSame;
 
-/**
- * @covers Contact
- */
+#[CoversClass(Contact::class)]
+#[TestDox('Тесты контакта')]
 final class ContactTest extends TestCase
 {
-    #[TestDox('Тест создания контакта')]
-    public function testCreate(): Contact
+    private static Uuid $uuid;
+    private static Category $category;
+    private static Name $name;
+    private static Contact $contact;
+
+    public static function setUpBeforeClass(): void
     {
-        $uuid = Uuid::next();
-        $category = new Category(
-            Uuid::next(),
+        parent::setUpBeforeClass();
+
+        self::$uuid = Uuid::next();
+        self::$category = new Category(
+            new Uuid('f3190be0-ecd2-4cd0-bf09-9d999bd17620'),
             new CategoryName('Управляющая компания')
         );
-        $name = new Name('Паспортный стол');
+        self::$name = new Name('Паспортный стол');
 
-        $contact = new Contact(uuid: $uuid, category: $category, name: $name);
+        self::$contact = new Contact(uuid: self::$uuid, category: self::$category, name: self::$name);
+    }
 
-        assertSame($uuid, $contact->getUuid());
-        assertSame($category, $contact->getCategory());
-        assertSame($name, $contact->getName());
-        assertSame(Status::Enable, $contact->getStatus());
-
-        return $contact;
+    #[TestDox('Тест создания контакта')]
+    public function testCreate(): void
+    {
+        assertSame(self::$uuid, self::$contact->getUuid());
+        assertSame(self::$category, self::$contact->getCategory());
+        assertSame(self::$name, self::$contact->getName());
+        assertSame(Status::Enable, self::$contact->getStatus());
     }
 
     #[TestDox('Тест создания события при создании контакта')]
-    #[Depends('testCreate')]
-    public function testEventOnCreated(Contact $contact): void
+    public function testEventOnCreated(): void
     {
-        $events = $contact->releaseEvents();
+        /** @var Event\ContactCreatedEvent $event */
+        $event = self::$contact->releaseEvents()[0];
 
-        assertInstanceOf(Event\ContactCreatedEvent::class, end($events));
+        assertInstanceOf(Event\ContactCreatedEvent::class, $event);
+        assertSame(self::$contact, $event->getContact());
     }
+
     #[TestDox('Тест изменения категории')]
-    #[Depends('testCreate')]
-    public function testChangeCategory(Contact $contact): Contact
+    public function testChangeCategory(): void
     {
         $category = new Category(Uuid::next(), new CategoryName('Новая категория'));
 
-        $contact->changeCategory($category);
+        self::$contact->changeCategory($category);
 
-        assertSame($category, $contact->getCategory());
-
-        return $contact;
+        assertSame($category, self::$contact->getCategory());
     }
 
     #[TestDox('Тест создания события при изменении категории')]
-    #[Depends('testChangeCategory')]
-    public function testEventOnChangeCategory(Contact $contact): void
+    public function testEventOnChangeCategory(): void
     {
-        $events = $contact->releaseEvents();
+        /** @var Event\ContactChangedCategoryEvent $event */
+        $event = self::$contact->releaseEvents()[0];
 
-        assertInstanceOf(Event\ContactChangedCategoryEvent::class, end($events));
+        assertInstanceOf(Event\ContactChangedCategoryEvent::class, $event);
+        assertSame(self::$contact, $event->getContact());
+        assertSame(self::$category, $event->getOldCategory());
     }
 }
