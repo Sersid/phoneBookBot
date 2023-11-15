@@ -15,7 +15,7 @@ final class Contact implements AggregateRoot
     public function __construct(
         private readonly Uuid $uuid,
         private Category $category,
-        private readonly Name $name,
+        private Name $name,
         private readonly array $phones = [],
         private readonly Address $address = new Address(),
         private readonly Website $website = new Website(),
@@ -61,7 +61,21 @@ final class Contact implements AggregateRoot
 
     public function changeCategory(Category $category): void
     {
+        if ($this->category->getUuid()->isEqual($category->getUuid())) {
+            return;
+        }
+
         $this->recordEvent(new Event\ContactChangedCategoryEvent($this, $this->category));
         $this->category = $category;
+    }
+
+    public function rename(Name $name): void
+    {
+        if ($this->name->isEqual($name)) {
+            return;
+        }
+
+        $this->recordEvent(new Event\ContactRenamedEvent($this, $this->name));
+        $this->name = $name;
     }
 }

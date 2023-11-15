@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\PhoneBookBot\Domain\Contact\Entity;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Depends;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Category;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Name as CategoryName;
 use Sersid\PhoneBookBot\Domain\Contact\Entity\Contact;
@@ -14,6 +15,7 @@ use Sersid\PhoneBookBot\Domain\Contact\Entity\Name;
 use Sersid\PhoneBookBot\Domain\Contact\Entity\Status;
 use Sersid\Shared\ValueObject\Uuid;
 use function PHPUnit\Framework\assertInstanceOf;
+use function PHPUnit\Framework\assertNotSame;
 use function PHPUnit\Framework\assertSame;
 
 #[CoversClass(Contact::class)]
@@ -49,6 +51,7 @@ final class ContactTest extends TestCase
     }
 
     #[TestDox('Тест создания события при создании контакта')]
+    #[Depends('testCreate')]
     public function testEventOnCreated(): void
     {
         /** @var Event\ContactCreatedEvent $event */
@@ -56,6 +59,20 @@ final class ContactTest extends TestCase
 
         assertInstanceOf(Event\ContactCreatedEvent::class, $event);
         assertSame(self::$contact, $event->getContact());
+    }
+
+    #[TestDox('Тест попытки изменения категории на такую же категорию')]
+    public function testNoChangeCategory(): void
+    {
+        $category = new Category(
+            new Uuid('f3190be0-ecd2-4cd0-bf09-9d999bd17620'),
+            new CategoryName('Управляющая компания')
+        );
+
+        self::$contact->changeCategory($category);
+
+        assertNotSame(self::$contact->getCategory(), $category);
+        assertSame([], self::$contact->releaseEvents());
     }
 
     #[TestDox('Тест изменения категории')]
@@ -69,6 +86,7 @@ final class ContactTest extends TestCase
     }
 
     #[TestDox('Тест создания события при изменении категории')]
+    #[Depends('testChangeCategory')]
     public function testEventOnChangeCategory(): void
     {
         /** @var Event\ContactChangedCategoryEvent $event */
@@ -77,5 +95,38 @@ final class ContactTest extends TestCase
         assertInstanceOf(Event\ContactChangedCategoryEvent::class, $event);
         assertSame(self::$contact, $event->getContact());
         assertSame(self::$category, $event->getOldCategory());
+    }
+
+    #[TestDox('Тест попытки переименовать контакт в то же имя')]
+    public function testNoRename(): void
+    {
+        $newName = new Name('Паспортный стол');
+
+        self::$contact->rename($newName);
+
+        assertNotSame(self::$contact->getName(), $newName);
+        assertSame([], self::$contact->releaseEvents());
+    }
+
+    #[TestDox('Тест переименования контакта')]
+    public function testRename(): void
+    {
+        $newName = new Name('Новое имя контакта');
+
+        self::$contact->rename($newName);
+
+        assertSame(self::$contact->getName(), $newName);
+    }
+
+    #[TestDox('Тест создания события при переименовании контакта')]
+    #[Depends('testRename')]
+    public function testEventOnRename(): void
+    {
+        /** @var Event\ContactRenamedEvent $event */
+        $event = self::$contact->releaseEvents()[0];
+
+        assertInstanceOf(Event\ContactRenamedEvent::class, $event);
+        assertSame(self::$contact, $event->getContact());
+        assertSame(self::$name, $event->getOldName());
     }
 }
