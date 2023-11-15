@@ -45,20 +45,12 @@ final class CategoryTest extends TestCase
     }
 
     #[TestDox('Тест создания события при создании категории')]
-    public function testEventOnCreated(): Event\CategoryCreatedEvent
+    public function testEventOnCreated(): void
     {
         /** @var Event\CategoryCreatedEvent $event */
         $event = self::$category->releaseEvents()[0];
 
         assertInstanceOf(Event\CategoryCreatedEvent::class, $event);
-
-        return $event;
-    }
-
-    #[TestDox('Тест содержимого события при создании категории')]
-    #[Depends('testEventOnCreated')]
-    public function testEventGetterOnCreated(Event\CategoryCreatedEvent $event): void
-    {
         assertSame(self::$category, $event->getCategory());
     }
 
@@ -83,14 +75,14 @@ final class CategoryTest extends TestCase
     }
 
     #[TestDox('Тест создания события при переименовании категории')]
-    public function testEventOnRenamed(): Event\CategoryRenamedEvent
+    public function testEventOnRenamed(): void
     {
         /** @var Event\CategoryRenamedEvent $event */
         $event = self::$category->releaseEvents()[0];
 
         assertInstanceOf(Event\CategoryRenamedEvent::class, $event);
-
-        return $event;
+        assertSame(self::$category, $event->getCategory());
+        assertSame(self::$name, $event->getOldName());
     }
 
     #[TestDox('Тест отключения категории')]
@@ -104,9 +96,12 @@ final class CategoryTest extends TestCase
     #[TestDox('Тест создания события при отключении категории')]
     public function testEventOnDisabled(): void
     {
+        /** @var Event\CategoryDisabledEvent $event */
         $event = self::$category->releaseEvents()[0];
 
         assertInstanceOf(Event\CategoryDisabledEvent::class, $event);
+        assertSame(self::$category, $event->getCategory());
+        assertSame(Status::Enable, $event->getOldStatus());
     }
 
     #[TestDox('Тест попытки повторного отключения категории')]
@@ -128,9 +123,12 @@ final class CategoryTest extends TestCase
     #[TestDox('Тест создания события при включении категории')]
     public function testEventOnEnabled(): void
     {
+        /** @var Event\CategoryEnabledEvent $event */
         $event = self::$category->releaseEvents()[0];
 
         assertInstanceOf(Event\CategoryEnabledEvent::class, $event);
+        assertSame(self::$category, $event->getCategory());
+        assertSame(Status::Disable, $event->getOldStatus());
     }
 
     #[TestDox('Тест попытки повторного включения категории')]
