@@ -6,7 +6,6 @@ namespace Sersid\PhoneBookBot\Domain\Category\Entity;
 use Sersid\PhoneBookBot\Domain\Category\Event;
 use Sersid\Shared\AggregateRoot;
 use Sersid\Shared\EventTrait;
-use Sersid\PhoneBookBot\Domain\Contact\Entity\Status;
 use Sersid\Shared\ValueObject\Uuid;
 
 final class Category implements AggregateRoot
@@ -16,7 +15,7 @@ final class Category implements AggregateRoot
     public function __construct(
         private readonly Uuid $uuid,
         private Name $name,
-        private Status $status = Status::Published
+        private Status $status = Status::Enable
     ) {
         $this->recordEvent(new Event\CategoryCreatedEvent($this));
     }
@@ -48,21 +47,21 @@ final class Category implements AggregateRoot
 
     public function disable(): void
     {
-        if ($this->status === Status::Removed) {
+        if ($this->status === Status::Disable) {
             return;
         }
 
         $this->recordEvent(new Event\CategoryDisabledEvent($this, $this->status));
-        $this->status = Status::Removed;
+        $this->status = Status::Disable;
     }
 
     public function enable(): void
     {
-        if ($this->status === Status::Published) {
+        if ($this->status === Status::Enable) {
             return;
         }
 
         $this->recordEvent(new Event\CategoryEnabledEvent($this, $this->status));
-        $this->status = Status::Published;
+        $this->status = Status::Enable;
     }
 }

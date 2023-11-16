@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Sersid\PhoneBookBot\Domain\Category\Event;
 
 use Sersid\PhoneBookBot\Domain\Category\Entity\Category;
-use Sersid\PhoneBookBot\Domain\Contact\Entity\Status;
+use Sersid\PhoneBookBot\Domain\Category\Entity\Status;
 
 final readonly class CategoryDisabledEvent
 {

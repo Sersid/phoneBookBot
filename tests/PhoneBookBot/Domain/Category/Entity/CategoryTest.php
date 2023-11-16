@@ -4,12 +4,11 @@ declare(strict_types=1);
 namespace Tests\PhoneBookBot\Domain\Category\Entity;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Category;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Name;
-use Sersid\PhoneBookBot\Domain\Contact\Entity\Status;
+use Sersid\PhoneBookBot\Domain\Category\Entity\Status;
 use Sersid\PhoneBookBot\Domain\Category\Event;
 use Sersid\Shared\ValueObject\Uuid;
 use function PHPUnit\Framework\assertInstanceOf;
@@ -31,7 +30,7 @@ final class CategoryTest extends TestCase
 
         self::$uuid = Uuid::next();
         self::$name = new Name('Управляющая компания');
-        self::$status = Status::Published;
+        self::$status = Status::Enable;
 
         self::$category = new Category(uuid: self::$uuid, name: self::$name, status: self::$status);
     }
@@ -41,7 +40,7 @@ final class CategoryTest extends TestCase
     {
         assertSame(self::$uuid, self::$category->getUuid());
         assertSame(self::$name, self::$category->getName());
-        assertSame(Status::Published, self::$category->getStatus());
+        assertSame(Status::Enable, self::$category->getStatus());
     }
 
     #[TestDox('Тест создания события при создании категории')]
@@ -90,7 +89,7 @@ final class CategoryTest extends TestCase
     {
         self::$category->disable();
 
-        assertSame(Status::Removed, self::$category->getStatus());
+        assertSame(Status::Disable, self::$category->getStatus());
     }
 
     #[TestDox('Тест создания события при отключении категории')]
@@ -101,7 +100,7 @@ final class CategoryTest extends TestCase
 
         assertInstanceOf(Event\CategoryDisabledEvent::class, $event);
         assertSame(self::$category, $event->getCategory());
-        assertSame(Status::Published, $event->getOldStatus());
+        assertSame(Status::Enable, $event->getOldStatus());
     }
 
     #[TestDox('Тест попытки повторного отключения категории')]
@@ -117,7 +116,7 @@ final class CategoryTest extends TestCase
     {
         self::$category->enable();
 
-        assertSame(Status::Published, self::$category->getStatus());
+        assertSame(Status::Enable, self::$category->getStatus());
     }
 
     #[TestDox('Тест создания события при включении категории')]
@@ -128,7 +127,7 @@ final class CategoryTest extends TestCase
 
         assertInstanceOf(Event\CategoryEnabledEvent::class, $event);
         assertSame(self::$category, $event->getCategory());
-        assertSame(Status::Removed, $event->getOldStatus());
+        assertSame(Status::Disable, $event->getOldStatus());
     }
 
     #[TestDox('Тест попытки повторного включения категории')]
