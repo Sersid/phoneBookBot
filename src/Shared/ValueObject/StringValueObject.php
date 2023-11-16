@@ -7,8 +7,11 @@ use Stringable;
 
 abstract readonly class StringValueObject implements Stringable
 {
-    public function __construct(protected string $value = '')
+    protected string $value;
+
+    public function __construct(string $value = '')
     {
+        $this->value = trim($value);
     }
 
     public function getValue(): string

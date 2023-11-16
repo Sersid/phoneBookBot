@@ -19,7 +19,7 @@ final class Contact implements AggregateRoot
         private readonly array $phones = [],
         private readonly Address $address = new Address(),
         private Website $website = new Website(),
-        private readonly Status $status = Status::Enable
+        private readonly Status $status = Status::Draft
     ) {
         $this->recordEvent(new Event\ContactCreatedEvent($this));
     }

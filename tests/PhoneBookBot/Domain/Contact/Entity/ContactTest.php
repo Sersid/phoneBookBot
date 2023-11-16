@@ -55,7 +55,7 @@ final class ContactTest extends TestCase
         assertSame(self::$uuid, self::$contact->getUuid());
         assertSame(self::$category, self::$contact->getCategory());
         assertSame(self::$name, self::$contact->getName());
-        assertSame(Status::Enable, self::$contact->getStatus());
+        assertSame(Status::Draft, self::$contact->getStatus());
     }
 
     #[TestDox('Тест создания события при создании контакта')]

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Shared\ValueObject;
+namespace Tests\PhoneBookBot\Domain\Category\Entity;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\TestWith;
-use Sersid\Shared\ValueObject\Name;
 use PHPUnit\Framework\TestCase;
+use Sersid\PhoneBookBot\Domain\Category\Entity\Name;
 
 #[CoversClass(Name::class)]
 #[TestDox('Тесты названия')]
@@ -20,6 +20,6 @@ final class NameTest extends TestCase
     {
         $this->expectExceptionMessage('Название обязательно для заполнения');
 
-        new \Sersid\PhoneBookBot\Domain\Category\Entity\Name($value);
+        new Name($value);
     }
 }

@@ -31,7 +31,7 @@ final class CategoryTest extends TestCase
 
         self::$uuid = Uuid::next();
         self::$name = new Name('Управляющая компания');
-        self::$status = Status::Enable;
+        self::$status = Status::Published;
 
         self::$category = new Category(uuid: self::$uuid, name: self::$name, status: self::$status);
     }
@@ -41,7 +41,7 @@ final class CategoryTest extends TestCase
     {
         assertSame(self::$uuid, self::$category->getUuid());
         assertSame(self::$name, self::$category->getName());
-        assertSame(Status::Enable, self::$category->getStatus());
+        assertSame(Status::Published, self::$category->getStatus());
     }
 
     #[TestDox('Тест создания события при создании категории')]
@@ -90,7 +90,7 @@ final class CategoryTest extends TestCase
     {
         self::$category->disable();
 
-        assertSame(Status::Disable, self::$category->getStatus());
+        assertSame(Status::Removed, self::$category->getStatus());
     }
 
     #[TestDox('Тест создания события при отключении категории')]
@@ -101,7 +101,7 @@ final class CategoryTest extends TestCase
 
         assertInstanceOf(Event\CategoryDisabledEvent::class, $event);
         assertSame(self::$category, $event->getCategory());
-        assertSame(Status::Enable, $event->getOldStatus());
+        assertSame(Status::Published, $event->getOldStatus());
     }
 
     #[TestDox('Тест попытки повторного отключения категории')]
@@ -117,7 +117,7 @@ final class CategoryTest extends TestCase
     {
         self::$category->enable();
 
-        assertSame(Status::Enable, self::$category->getStatus());
+        assertSame(Status::Published, self::$category->getStatus());
     }
 
     #[TestDox('Тест создания события при включении категории')]
@@ -128,7 +128,7 @@ final class CategoryTest extends TestCase
 
         assertInstanceOf(Event\CategoryEnabledEvent::class, $event);
         assertSame(self::$category, $event->getCategory());
-        assertSame(Status::Disable, $event->getOldStatus());
+        assertSame(Status::Removed, $event->getOldStatus());
     }
 
     #[TestDox('Тест попытки повторного включения категории')]

@@ -5,16 +5,22 @@ namespace Sersid\PhoneBookBot\Domain\Contact\Entity;
 
 enum Status
 {
-    case Enable;
-    case Disable;
+    case Draft;
+    case Published;
+    case Removed;
 
-    public function isEnable(): bool
+    public function isDraft(): bool
     {
-        return $this === self::Enable;
+        return $this === self::Draft;
     }
 
-    public function isDisable(): bool
+    public function isPublished(): bool
     {
-        return $this === self::Disable;
+        return $this === self::Published;
+    }
+
+    public function isRemoved(): bool
+    {
+        return $this === self::Removed;
     }
 }
