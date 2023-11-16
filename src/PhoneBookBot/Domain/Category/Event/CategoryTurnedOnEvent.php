@@ -6,7 +6,7 @@ namespace Sersid\PhoneBookBot\Domain\Category\Event;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Category;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Status;
 
-final readonly class CategoryDisabledEvent
+final readonly class CategoryTurnedOnEvent
 {
     public function __construct(private Category $category, private Status $oldStatus)
     {

@@ -5,16 +5,16 @@ namespace Sersid\PhoneBookBot\Domain\Category\Entity;
 
 enum Status
 {
-    case Enable;
-    case Disable;
+    case TurnedOn;
+    case TurnedOff;
 
-    public function isEnable(): bool
+    public function isTurnedOn(): bool
     {
-        return $this === self::Enable;
+        return $this === self::TurnedOn;
     }
 
-    public function isDisable(): bool
+    public function isTurnedOff(): bool
     {
-        return $this === self::Disable;
+        return $this === self::TurnedOff;
     }
 }

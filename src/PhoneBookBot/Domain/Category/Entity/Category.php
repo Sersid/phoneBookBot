@@ -15,7 +15,7 @@ final class Category implements AggregateRoot
     public function __construct(
         private readonly Uuid $uuid,
         private Name $name,
-        private Status $status = Status::Enable
+        private Status $status = Status::TurnedOn
     ) {
         $this->recordEvent(new Event\CategoryCreatedEvent($this));
     }
@@ -45,23 +45,23 @@ final class Category implements AggregateRoot
         $this->name = $name;
     }
 
-    public function disable(): void
+    public function turnOff(): void
     {
-        if ($this->status === Status::Disable) {
+        if ($this->status->isTurnedOff()) {
             return;
         }
 
-        $this->recordEvent(new Event\CategoryDisabledEvent($this, $this->status));
-        $this->status = Status::Disable;
+        $this->recordEvent(new Event\CategoryTurnedOffEvent($this, $this->status));
+        $this->status = Status::TurnedOff;
     }
 
-    public function enable(): void
+    public function turnOn(): void
     {
-        if ($this->status === Status::Enable) {
+        if ($this->status->isTurnedOn()) {
             return;
         }
 
-        $this->recordEvent(new Event\CategoryEnabledEvent($this, $this->status));
-        $this->status = Status::Enable;
+        $this->recordEvent(new Event\CategoryTurnedOnEvent($this, $this->status));
+        $this->status = Status::TurnedOn;
     }
 }
