@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Sersid\PhoneBookBot\Domain\Category\Entity\Name;
 
 #[CoversClass(Name::class)]
-#[TestDox('Тесты названия')]
+#[TestDox('Тесты названия категории')]
 final class NameTest extends TestCase
 {
     #[TestDox('Тест некорректного названия категории: "$value"')]
