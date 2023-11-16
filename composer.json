@@ -1,6 +1,6 @@
 {
   "name": "sersid/contact-book-bot",
-  "description": "Phone Book Bot",
+  "description": "Contact Book Bot",
   "minimum-stability": "stable",
   "license": "proprietary",
   "authors": [
