@@ -7,6 +7,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Depends;
 use Sersid\ContactBookBot\Domain\Category\Entity\Category;
 use Sersid\ContactBookBot\Domain\Category\Entity\Name as CategoryName;
+use Sersid\ContactBookBot\Domain\Contact\Entity\Address;
 use Sersid\ContactBookBot\Domain\Contact\Entity\Contact;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,7 @@ final class ContactTest extends TestCase
     private static Uuid $uuid;
     private static Category $category;
     private static Name $name;
+    private static Address $address;
     private static Website $website;
     private static Contact $contact;
 
@@ -39,12 +41,14 @@ final class ContactTest extends TestCase
             new CategoryName('Управляющая компания')
         );
         self::$name = new Name();
+        self::$address = new Address();
         self::$website = new Website();
 
         self::$contact = new Contact(
             uuid: self::$uuid,
             category: self::$category,
             name: self::$name,
+            address: self::$address,
             website: self::$website,
         );
     }
@@ -136,6 +140,39 @@ final class ContactTest extends TestCase
         assertInstanceOf(Event\ContactRenamedEvent::class, $event);
         assertSame(self::$contact, $event->getContact());
         assertSame(self::$name, $event->getOldName());
+    }
+
+    #[TestDox('Тест попытки изменить адрес без изменения содержимого адреса')]
+    public function testNoChangeAddress(): void
+    {
+        $address = new Address();
+
+        self::$contact->changeAddress($address);
+
+        assertNotSame(self::$contact->getAddress(), $address);
+        assertSame([], self::$contact->releaseEvents());
+    }
+
+    #[TestDox('Тест изменения адреса')]
+    public function testChangeAddress(): void
+    {
+        $address = new Address('ул. Пушкина, 1');
+
+        self::$contact->changeAddress($address);
+
+        assertSame(self::$contact->getAddress(), $address);
+    }
+
+    #[TestDox('Тест создания события при изменении адреса')]
+    #[Depends('testRename')]
+    public function testEventOnChangeAddress(): void
+    {
+        /** @var Event\ContactChangedAddressEvent $event */
+        $event = self::$contact->releaseEvents()[0];
+
+        assertInstanceOf(Event\ContactChangedAddressEvent::class, $event);
+        assertSame(self::$contact, $event->getContact());
+        assertSame(self::$address, $event->getOldAddress());
     }
 
     #[TestDox('Тест попытки изменить вебсайт на тот же')]

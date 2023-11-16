@@ -5,11 +5,10 @@ namespace Sersid\ContactBookBot\Domain\Contact\Entity;
 
 final readonly class Address
 {
-    public function __construct(
-        private string $address = '',
-        private MapLocation $mapLocation = new MapLocation(),
-    )
+    private string $address;
+    public function __construct(string $address = '', private MapLocation $mapLocation = new MapLocation())
     {
+        $this->address = trim($address);
     }
 
     public function getAddress(): string
@@ -20,5 +19,15 @@ final readonly class Address
     public function getMapLocation(): MapLocation
     {
         return $this->mapLocation;
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->address) && $this->mapLocation->isEmpty();
+    }
+
+    public function isEqual(self $other): bool
+    {
+        return $this->address === $other->address && $this->mapLocation->isEqual($other->mapLocation);
     }
 }

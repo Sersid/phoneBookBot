@@ -17,7 +17,7 @@ final class Contact implements AggregateRoot
         private Category $category,
         private Name $name = new Name(),
         private readonly array $phones = [],
-        private readonly Address $address = new Address(),
+        private Address $address = new Address(),
         private Website $website = new Website(),
         private readonly Status $status = Status::Draft
     ) {
@@ -77,6 +77,16 @@ final class Contact implements AggregateRoot
 
         $this->recordEvent(new Event\ContactRenamedEvent($this, $this->name));
         $this->name = $name;
+    }
+
+    public function changeAddress(Address $address): void
+    {
+        if ($this->address->isEqual($address)) {
+            return;
+        }
+
+        $this->recordEvent(new Event\ContactChangedAddressEvent($this, $this->address));
+        $this->address = $address;
     }
 
     public function changeWebsite(Website $website): void

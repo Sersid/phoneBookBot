@@ -27,4 +27,9 @@ final readonly class MapLocation
     {
         return $this->lat === null || $this->lon === null;
     }
+
+    public function isEqual(self $other): bool
+    {
+        return $this->lat === $other->lat && $this->lon === $other->lon;
+    }
 }
