@@ -10,6 +10,7 @@ use Sersid\PhoneBookBot\Domain\Category\Entity\Name as CategoryName;
 use Sersid\PhoneBookBot\Domain\Contact\Entity\Contact;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
+use Sersid\PhoneBookBot\Domain\Contact\Entity\Website;
 use Sersid\PhoneBookBot\Domain\Contact\Event;
 use Sersid\PhoneBookBot\Domain\Contact\Entity\Name;
 use Sersid\PhoneBookBot\Domain\Contact\Entity\Status;
@@ -25,6 +26,7 @@ final class ContactTest extends TestCase
     private static Uuid $uuid;
     private static Category $category;
     private static Name $name;
+    private static Website $website;
     private static Contact $contact;
 
     public static function setUpBeforeClass(): void
@@ -37,8 +39,14 @@ final class ContactTest extends TestCase
             new CategoryName('Управляющая компания')
         );
         self::$name = new Name('Паспортный стол');
+        self::$website = new Website();
 
-        self::$contact = new Contact(uuid: self::$uuid, category: self::$category, name: self::$name);
+        self::$contact = new Contact(
+            uuid: self::$uuid,
+            category: self::$category,
+            name: self::$name,
+            website: self::$website,
+        );
     }
 
     #[TestDox('Тест создания контакта')]
@@ -128,5 +136,38 @@ final class ContactTest extends TestCase
         assertInstanceOf(Event\ContactRenamedEvent::class, $event);
         assertSame(self::$contact, $event->getContact());
         assertSame(self::$name, $event->getOldName());
+    }
+
+    #[TestDox('Тест попытки изменить вебсайт на тот же')]
+    public function testNoChangeWebsite(): void
+    {
+        $website = new Website();
+
+        self::$contact->changeWebsite($website);
+
+        assertNotSame(self::$contact->getWebsite(), $website);
+        assertSame([], self::$contact->releaseEvents());
+    }
+
+    #[TestDox('Тест изменения вебсайта')]
+    public function testChangeWebsite(): void
+    {
+        $website = new Website('www.website.com');
+
+        self::$contact->changeWebsite($website);
+
+        assertSame(self::$contact->getWebsite(), $website);
+    }
+
+    #[TestDox('Тест создания события при изменении вебсайта')]
+    #[Depends('testChangeWebsite')]
+    public function testEventOnChangeWebsite(): void
+    {
+        /** @var Event\ContactChangedWebsiteEvent $event */
+        $event = self::$contact->releaseEvents()[0];
+
+        assertInstanceOf(Event\ContactChangedWebsiteEvent::class, $event);
+        assertSame(self::$contact, $event->getContact());
+        assertSame(self::$website, $event->getOldWebsite());
     }
 }
