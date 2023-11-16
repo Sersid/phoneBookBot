@@ -15,7 +15,6 @@ final class NameTest extends TestCase
 {
     #[TestDox('Тест некорректного названия категории: "$value"')]
     #[TestWith([''])]
-    #[TestWith([' '])]
     #[TestWith(['   '])]
     public function testEmptyValue(string $value): void
     {

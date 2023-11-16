@@ -3,15 +3,40 @@ declare(strict_types=1);
 
 namespace Sersid\PhoneBookBot\Domain\Contact\Entity;
 
-use Sersid\Shared\ValueObject\StringValueObject;
+use Stringable;
 use Webmozart\Assert\Assert;
 
-final readonly class Phone extends StringValueObject
+final readonly class Phone implements Stringable
 {
-    public function __construct(string $value)
+    private string $title;
+    private string $number;
+
+    public function __construct(string $number, string $title = '')
     {
-        $value = trim($value);
-        Assert::notEmpty($value);
-        parent::__construct($value);
+        $number = trim($number);
+        Assert::notEmpty($number, 'Номер телефона обязателен для заполнения');
+        $this->number = $number;
+
+        $this->title = trim($title);
+    }
+
+    public function getNumber(): string
+    {
+        return $this->number;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function __toString(): string
+    {
+        return $this->number . (empty($this->title) ? '' : ' (' . $this->title . ')');
+    }
+
+    public function isEqual(self $other): bool
+    {
+        return (string)$this === (string)$other;
     }
 }

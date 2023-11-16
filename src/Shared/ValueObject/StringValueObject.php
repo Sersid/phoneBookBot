@@ -5,7 +5,7 @@ namespace Sersid\Shared\ValueObject;
 
 abstract readonly class StringValueObject
 {
-    public function __construct(protected string $value)
+    public function __construct(protected string $value = '')
     {
     }
 

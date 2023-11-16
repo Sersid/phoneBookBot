@@ -7,8 +7,4 @@ use Sersid\Shared\ValueObject\StringValueObject;
 
 final readonly class Website extends StringValueObject
 {
-    public function __construct(string $value = '')
-    {
-        parent::__construct($value);
-    }
 }
