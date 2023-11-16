@@ -38,7 +38,7 @@ final class PhoneTest extends TestCase
         assertSame($title, $phone->getTitle());
     }
 
-    #[TestDox('Тест преобразования в строку (number:"$number", title:"$title", expected: "$expected")')]
+    #[TestDox('Тест преобразования в строку (number: "$number", title: "$title", expected: "$expected")')]
     #[TestWith(['88005553535', 'Диспетчер', '88005553535 (Диспетчер)'])]
     #[TestWith(['88005553535', '', '88005553535'])]
     public function testToString(string $number, string $title, string $expected): void
@@ -51,9 +51,10 @@ final class PhoneTest extends TestCase
     #[TestDox('Тест эквивалентности двух телефонов')]
     public function testEqual(): void
     {
-        $phone = new Phone('88005553535', 'Диспетчер');
+        $phone1 = new Phone('88005553535', 'Диспетчер');
+        $phone2 = new Phone('88005553535', 'Диспетчер');
 
-        $isEqual = $phone->isEqual(new Phone('88005553535', 'Диспетчер'));
+        $isEqual = $phone1->isEqual($phone2);
 
        assertTrue($isEqual);
     }
@@ -61,9 +62,10 @@ final class PhoneTest extends TestCase
     #[TestDox('Тест не эквивалентности двух телефонов')]
     public function testNotEqual(): void
     {
-        $phone = new Phone('88005553535', 'Диспетчер');
+        $phone1 = new Phone('88005553535', 'Диспетчер');
+        $phone2 = new Phone('88005553535');
 
-        $isEqual = $phone->isEqual(new Phone('88005553535'));
+        $isEqual = $phone1->isEqual($phone2);
 
         assertFalse($isEqual);
     }
