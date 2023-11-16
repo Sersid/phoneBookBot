@@ -5,18 +5,20 @@ namespace Sersid\PhoneBookBot\Domain\Contact\Entity;
 
 final readonly class Address
 {
-    public function __construct(private string $street = '', private string $houseNumber = '', )
+    public function __construct(
+        private string $address = '',
+        private MapLocation $mapLocation = new MapLocation(),
+    )
     {
-        // coordinates
     }
 
-    public function getStreet(): string
+    public function getAddress(): string
     {
-        return $this->street;
+        return $this->address;
     }
 
-    public function getHouseNumber(): string
+    public function getMapLocation(): MapLocation
     {
-        return $this->houseNumber;
+        return $this->mapLocation;
     }
 }
