@@ -15,7 +15,7 @@ final class Contact implements AggregateRoot
     public function __construct(
         private readonly Uuid $uuid,
         private Category $category,
-        private Name $name,
+        private Name $name = new Name(),
         private readonly array $phones = [],
         private readonly Address $address = new Address(),
         private Website $website = new Website(),

@@ -38,7 +38,7 @@ final class ContactTest extends TestCase
             new Uuid('f3190be0-ecd2-4cd0-bf09-9d999bd17620'),
             new CategoryName('Управляющая компания')
         );
-        self::$name = new Name('Паспортный стол');
+        self::$name = new Name();
         self::$website = new Website();
 
         self::$contact = new Contact(
@@ -108,7 +108,7 @@ final class ContactTest extends TestCase
     #[TestDox('Тест попытки переименовать контакт в то же имя')]
     public function testNoRename(): void
     {
-        $newName = new Name('Паспортный стол');
+        $newName = new Name();
 
         self::$contact->rename($newName);
 
