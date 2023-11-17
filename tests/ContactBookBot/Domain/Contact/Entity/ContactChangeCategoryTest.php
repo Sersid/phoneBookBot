@@ -7,7 +7,7 @@ use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\TestDox;
 use Sersid\ContactBookBot\Domain\Category\Entity\Category;
 use Sersid\ContactBookBot\Domain\Contact\Event;
-use Sersid\ContactBookBot\Domain\Category\Entity\Name as CategoryName;
+use Sersid\ContactBookBot\Domain\Category\Entity\Name;
 use Sersid\Shared\ValueObject\Uuid;
 use function PHPUnit\Framework\assertInstanceOf;
 use function PHPUnit\Framework\assertNotSame;
@@ -21,7 +21,7 @@ final class ContactChangeCategoryTest extends ContactTestCase
     {
         $category = new Category(
             new Uuid('f3190be0-ecd2-4cd0-bf09-9d999bd17620'),
-            new CategoryName('Управляющая компания')
+            new Name('Управляющая компания')
         );
 
         self::$contact->releaseEvents();
@@ -34,7 +34,7 @@ final class ContactChangeCategoryTest extends ContactTestCase
     #[TestDox('Тест изменения категории')]
     public function testChangeCategory(): void
     {
-        $category = new Category(Uuid::next(), new CategoryName('Новая категория'));
+        $category = new Category(Uuid::next(), new Name('Новая категория'));
 
         self::$contact->changeCategory($category);
 

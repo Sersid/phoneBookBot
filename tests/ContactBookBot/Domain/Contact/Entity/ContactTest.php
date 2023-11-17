@@ -14,7 +14,7 @@ use function PHPUnit\Framework\assertSame;
 
 #[CoversClass(Contact::class)]
 #[TestDox('Тесты создания контакта')]
-final class ContactCreateTest extends ContactTestCase
+final class ContactTest extends ContactTestCase
 {
     #[TestDox('Тест создания контакта')]
     public function testCreate(): void

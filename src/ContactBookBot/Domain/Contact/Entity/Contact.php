@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Sersid\ContactBookBot\Domain\Contact\Entity;
 
+use LogicException;
 use Sersid\ContactBookBot\Domain\Category\Entity\Category;
 use Sersid\ContactBookBot\Domain\Contact\Event;
 use Sersid\Shared\AggregateRoot;
@@ -85,6 +86,16 @@ final class Contact implements AggregateRoot
     {
         $this->phones->add($phone);
         $this->recordEvent(new Event\ContactPhoneAddedEvent($this, $phone));
+    }
+
+    public function removePhone(int $index): void
+    {
+        if (!$this->phones->offsetExists($index)) {
+            throw new LogicException('Телефон не найден');
+        }
+
+        $this->recordEvent(new Event\ContactPhoneRemovedEvent($this, $this->phones[$index]));
+        $this->phones->offsetUnset($index);
     }
 
     public function changeAddress(Address $address): void

@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Tests\ContactBookBot\Domain\Contact\Entity;
 
-use PHPUnit\Framework\Attributes\Depends;
-use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use Sersid\ContactBookBot\Domain\Category\Entity\Category;
 use Sersid\ContactBookBot\Domain\Category\Entity\Name as CategoryName;
@@ -12,12 +10,8 @@ use Sersid\ContactBookBot\Domain\Contact\Entity\Address;
 use Sersid\ContactBookBot\Domain\Contact\Entity\Contact;
 use Sersid\ContactBookBot\Domain\Contact\Entity\Name;
 use Sersid\ContactBookBot\Domain\Contact\Entity\Phones;
-use Sersid\ContactBookBot\Domain\Contact\Entity\Status;
 use Sersid\ContactBookBot\Domain\Contact\Entity\Website;
-use Sersid\ContactBookBot\Domain\Contact\Event;
 use Sersid\Shared\ValueObject\Uuid;
-use function PHPUnit\Framework\assertInstanceOf;
-use function PHPUnit\Framework\assertSame;
 
 abstract class ContactTestCase extends TestCase
 {

@@ -14,12 +14,23 @@ use function PHPUnit\Framework\assertSame;
 #[TestDox('Тесты изменения адреса контакта')]
 final class ContactChangeAddressTest extends ContactTestCase
 {
+    #[TestDox('Тест попытки изменить адрес без изменения содержимого адреса')]
+    public function testNoChangeAddress(): void
+    {
+        $address = new Address();
+
+        self::$contact->releaseEvents();
+        self::$contact->changeAddress($address);
+
+        assertNotSame(self::$contact->getAddress(), $address);
+        assertSame([], self::$contact->releaseEvents());
+    }
+
     #[TestDox('Тест изменения адреса')]
     public function testChangeAddress(): void
     {
         $address = new Address('ул. Пушкина, 1');
 
-        self::$contact->releaseEvents();
         self::$contact->changeAddress($address);
 
         assertSame(self::$contact->getAddress(), $address);
