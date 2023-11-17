@@ -12,15 +12,17 @@ use Sersid\Shared\ValueObject\Uuid;
 final class Contact implements AggregateRoot
 {
     use EventTrait;
+
     public function __construct(
         private readonly Uuid $uuid,
         private Category $category,
-        private Name $name = new Name(),
-        private readonly array $phones = [],
+        private Name $name,
+        private readonly Phones $phones = new Phones(),
         private Address $address = new Address(),
         private Website $website = new Website(),
         private readonly Status $status = Status::Draft
     ) {
+
         $this->recordEvent(new Event\ContactCreatedEvent($this));
     }
 
@@ -39,7 +41,7 @@ final class Contact implements AggregateRoot
         return $this->name;
     }
 
-    public function getPhones(): array
+    public function getPhones(): Phones
     {
         return $this->phones;
     }
@@ -77,6 +79,12 @@ final class Contact implements AggregateRoot
 
         $this->recordEvent(new Event\ContactRenamedEvent($this, $this->name));
         $this->name = $name;
+    }
+
+    public function addPhone(Phone $phone): void
+    {
+        $this->phones->add($phone);
+        $this->recordEvent(new Event\ContactPhoneAddedEvent($this, $phone));
     }
 
     public function changeAddress(Address $address): void

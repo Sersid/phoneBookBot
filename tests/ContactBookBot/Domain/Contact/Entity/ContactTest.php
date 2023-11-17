@@ -11,6 +11,8 @@ use Sersid\ContactBookBot\Domain\Contact\Entity\Address;
 use Sersid\ContactBookBot\Domain\Contact\Entity\Contact;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
+use Sersid\ContactBookBot\Domain\Contact\Entity\Phone;
+use Sersid\ContactBookBot\Domain\Contact\Entity\Phones;
 use Sersid\ContactBookBot\Domain\Contact\Entity\Website;
 use Sersid\ContactBookBot\Domain\Contact\Event;
 use Sersid\ContactBookBot\Domain\Contact\Entity\Name;
@@ -27,6 +29,7 @@ final class ContactTest extends TestCase
     private static Uuid $uuid;
     private static Category $category;
     private static Name $name;
+    private static Phones $phones;
     private static Address $address;
     private static Website $website;
     private static Contact $contact;
@@ -41,6 +44,7 @@ final class ContactTest extends TestCase
             new CategoryName('Управляющая компания')
         );
         self::$name = new Name();
+        self::$phones = new Phones();
         self::$address = new Address();
         self::$website = new Website();
 
@@ -48,6 +52,7 @@ final class ContactTest extends TestCase
             uuid: self::$uuid,
             category: self::$category,
             name: self::$name,
+            phones: self::$phones,
             address: self::$address,
             website: self::$website,
         );
@@ -140,6 +145,28 @@ final class ContactTest extends TestCase
         assertInstanceOf(Event\ContactRenamedEvent::class, $event);
         assertSame(self::$contact, $event->getContact());
         assertSame(self::$name, $event->getOldName());
+    }
+
+    #[TestDox('Тест добавления телефона')]
+    public function testAddPhone(): void
+    {
+        $phone = new Phone('88005553535');
+
+        self::$contact->addPhone($phone);
+
+        self::assertSame($phone, self::$phones[0]);
+    }
+
+    #[TestDox('Тест создания события при добавлении телефона')]
+    #[Depends('testAddPhone')]
+    public function testEventOnAddPhone(): void
+    {
+        /** @var Event\ContactPhoneAddedEvent $event */
+        $event = self::$contact->releaseEvents()[0];
+
+        assertInstanceOf(Event\ContactPhoneAddedEvent::class, $event);
+        assertSame(self::$contact, $event->getContact());
+        assertSame(self::$phones[0], $event->getPhone());
     }
 
     #[TestDox('Тест попытки изменить адрес без изменения содержимого адреса')]

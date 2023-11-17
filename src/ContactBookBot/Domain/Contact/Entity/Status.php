@@ -7,7 +7,7 @@ enum Status
 {
     case Draft;
     case Published;
-    case Removed;
+    case Unpublished;
 
     public function isDraft(): bool
     {
@@ -19,8 +19,8 @@ enum Status
         return $this === self::Published;
     }
 
-    public function isRemoved(): bool
+    public function isUnpublished(): bool
     {
-        return $this === self::Removed;
+        return $this === self::Unpublished;
     }
 }
