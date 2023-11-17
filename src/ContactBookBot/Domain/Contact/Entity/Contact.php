@@ -84,7 +84,7 @@ final class Contact implements AggregateRoot
 
     public function addPhone(Phone $phone): void
     {
-        $this->phones->add($phone);
+        $this->phones->addPhone($phone);
         $this->recordEvent(new Event\ContactPhoneAddedEvent($this, $phone));
     }
 

@@ -69,4 +69,16 @@ final class PhoneTest extends TestCase
 
         assertFalse($isEqual);
     }
+
+    #[TestDox('Тест получения "чистого" номера телефона (number: $number, expected: $expected)')]
+    #[TestWith(['+78005553535', '78005553535'])]
+    #[TestWith(['+7 (900) 123-45-67', '79001234567'])]
+    public function testCleanPhone(string $number, string $expected): void
+    {
+        $number = new Phone($number);
+
+        $result = $number->getCleanNumber();
+
+        self::assertSame($expected, $result);
+    }
 }

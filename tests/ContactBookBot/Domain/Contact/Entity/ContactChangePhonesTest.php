@@ -19,7 +19,7 @@ final class ContactChangePhonesTest extends ContactTestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        self::$phone = new Phone('88005553535');
+        self::$phone = new Phone('88005553535', 'Диспетчер');
     }
 
     #[TestDox('Тест добавления телефона')]
@@ -41,6 +41,16 @@ final class ContactChangePhonesTest extends ContactTestCase
         assertInstanceOf(Event\ContactPhoneAddedEvent::class, $event);
         assertSame(self::$contact, $event->getContact());
         assertSame(self::$phone, $event->getPhone());
+    }
+
+    #[TestDox('Тест попытки добавления существующего телефона')]
+    public function testAddDuplicatePhone(): void
+    {
+        $phone = new Phone('88005553535', 'Диспетчер');
+
+        $this->expectExceptionMessage('Номер телефона уже существует');
+
+        self::$contact->addPhone($phone);
     }
 
     #[TestDox('Тест удаления телефона')]

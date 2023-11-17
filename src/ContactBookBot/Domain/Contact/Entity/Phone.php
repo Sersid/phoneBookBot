@@ -39,4 +39,9 @@ final readonly class Phone implements Stringable
     {
         return (string)$this === (string)$other;
     }
+
+    public function getCleanNumber(): string
+    {
+        return preg_replace('/\D/', '', $this->number);
+    }
 }
