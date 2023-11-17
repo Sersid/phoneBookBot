@@ -10,17 +10,17 @@ final class ContactEvent
 {
     private const EVENTS = [
         'created' => ContactCreatedEvent::class,
-        'changedCategory' => ContactChangedCategoryEvent::class,
+        'changed-category' => ContactChangedCategoryEvent::class,
         'renamed' => ContactRenamedEvent::class,
-        'phoneAdded' => ContactPhoneAddedEvent::class,
-        'phoneRemoved' => ContactPhoneRemovedEvent::class,
-        'changedAddress' => ContactChangedAddressEvent::class,
-        'changedWebsite' => ContactChangedWebsiteEvent::class,
+        'phone-added' => ContactPhoneAddedEvent::class,
+        'phone-removed' => ContactPhoneRemovedEvent::class,
+        'changed-address' => ContactChangedAddressEvent::class,
+        'changed-website' => ContactChangedWebsiteEvent::class,
     ];
 
     private static array $events = [];
 
-    public static function recordEvent(Contact $contact, string $eventName, ...$params): void
+    public static function recordEvent(Contact $contact, string $eventName, mixed ...$params): void
     {
         $className = self::EVENTS[$eventName] ?? throw new DomainException('Событие ' . $eventName . ' не найдено');
         self::$events[] = new $className($contact, ...$params);

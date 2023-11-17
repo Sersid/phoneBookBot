@@ -64,7 +64,7 @@ final class Contact implements AggregateRoot
             return;
         }
 
-        Event\ContactEvent::recordEvent($this, 'changedCategory', $this->category);
+        Event\ContactEvent::recordEvent($this, 'changed-category', $this->category);
         $this->category = $category;
     }
 
@@ -81,7 +81,7 @@ final class Contact implements AggregateRoot
     public function addPhone(Phone $phone): void
     {
         $this->phones->addPhone($phone);
-        Event\ContactEvent::recordEvent($this, 'phoneAdded', $phone);
+        Event\ContactEvent::recordEvent($this, 'phone-added', $phone);
     }
 
     public function removePhone(int $index): void
@@ -90,7 +90,7 @@ final class Contact implements AggregateRoot
             throw new LogicException('Телефон не найден');
         }
 
-        Event\ContactEvent::recordEvent($this, 'phoneRemoved', $this->phones[$index]);
+        Event\ContactEvent::recordEvent($this, 'phone-removed', $this->phones[$index]);
         unset($this->phones[$index]);
     }
 
@@ -100,7 +100,7 @@ final class Contact implements AggregateRoot
             return;
         }
 
-        Event\ContactEvent::recordEvent($this, 'changedAddress', $this->address);
+        Event\ContactEvent::recordEvent($this, 'changed-address', $this->address);
         $this->address = $address;
     }
 
@@ -110,7 +110,7 @@ final class Contact implements AggregateRoot
             return;
         }
 
-        Event\ContactEvent::recordEvent($this, 'changedWebsite', $this->website);
+        Event\ContactEvent::recordEvent($this, 'changed-website', $this->website);
         $this->website = $website;
     }
 
