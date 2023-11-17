@@ -90,12 +90,12 @@ final class Contact implements AggregateRoot
 
     public function removePhone(int $index): void
     {
-        if (!$this->phones->offsetExists($index)) {
+        if (!isset($this->phones[$index])) {
             throw new LogicException('Телефон не найден');
         }
 
         $this->recordEvent(new Event\ContactPhoneRemovedEvent($this, $this->phones[$index]));
-        $this->phones->offsetUnset($index);
+        unset($this->phones[$index]);
     }
 
     public function changeAddress(Address $address): void
