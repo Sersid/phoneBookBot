@@ -7,10 +7,13 @@ use LogicException;
 use Sersid\ContactBookBot\Domain\Category\Entity\Category;
 use Sersid\ContactBookBot\Domain\Contact\Event;
 use Sersid\Shared\AggregateRoot;
+use Sersid\Shared\EventTrait;
 use Sersid\Shared\ValueObject\Uuid;
 
 final class Contact implements AggregateRoot
 {
+    use EventTrait;
+
     public function __construct(
         private readonly Uuid $uuid,
         private Category $category,
@@ -20,7 +23,7 @@ final class Contact implements AggregateRoot
         private Website $website = new Website(),
         private readonly Status $status = Status::Draft
     ) {
-        Event\ContactEvent::recordEvent($this, 'created');
+        $this->recordEvent(new Event\ContactCreatedEvent($this));
     }
 
     public function getUuid(): Uuid
@@ -64,7 +67,7 @@ final class Contact implements AggregateRoot
             return;
         }
 
-        Event\ContactEvent::recordEvent($this, 'changed-category', $this->category);
+        $this->recordEvent(new Event\ContactChangedCategoryEvent($this, $this->category));
         $this->category = $category;
     }
 
@@ -74,14 +77,14 @@ final class Contact implements AggregateRoot
             return;
         }
 
-        Event\ContactEvent::recordEvent($this, 'renamed', $this->name);
+        $this->recordEvent(new Event\ContactRenamedEvent($this, $this->name));
         $this->name = $name;
     }
 
     public function addPhone(Phone $phone): void
     {
         $this->phones->addPhone($phone);
-        Event\ContactEvent::recordEvent($this, 'phone-added', $phone);
+        $this->recordEvent(new Event\ContactPhoneAddedEvent($this, $phone));
     }
 
     public function removePhone(int $index): void
@@ -90,7 +93,7 @@ final class Contact implements AggregateRoot
             throw new LogicException('Телефон не найден');
         }
 
-        Event\ContactEvent::recordEvent($this, 'phone-removed', $this->phones[$index]);
+        $this->recordEvent(new Event\ContactPhoneRemovedEvent($this, $this->phones[$index]));
         unset($this->phones[$index]);
     }
 
@@ -100,7 +103,7 @@ final class Contact implements AggregateRoot
             return;
         }
 
-        Event\ContactEvent::recordEvent($this, 'changed-address', $this->address);
+        $this->recordEvent(new Event\ContactChangedAddressEvent($this, $this->address));
         $this->address = $address;
     }
 
@@ -110,12 +113,7 @@ final class Contact implements AggregateRoot
             return;
         }
 
-        Event\ContactEvent::recordEvent($this, 'changed-website', $this->website);
+        $this->recordEvent(new Event\ContactChangedWebsiteEvent($this, $this->website));
         $this->website = $website;
-    }
-
-    public function releaseEvents(): array
-    {
-        return Event\ContactEvent::releaseEvents();
     }
 }
