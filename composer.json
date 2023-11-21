@@ -16,7 +16,8 @@
     "ramsey/uuid": "^4.7",
     "webmozart/assert": "^1.11",
     "ramsey/collection": "^2.0",
-    "php-di/php-di": "^7.0"
+    "php-di/php-di": "^7.0",
+    "psr/event-dispatcher": "^1.0"
   }
   ,
   "require-dev": {

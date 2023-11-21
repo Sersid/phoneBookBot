@@ -15,12 +15,6 @@ final class Categories extends AbstractCollection
         return Category::class;
     }
 
-    /**
-     * @param mixed $offset
-     * @param Category $value
-     *
-     * @return void
-     */
     public function offsetSet(mixed $offset, mixed $value): void
     {
         parent::offsetSet($value->getUuid()->getValue(), $value);

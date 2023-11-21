@@ -5,8 +5,9 @@ namespace Sersid\ContactBookBot\Contact\Domain\Event;
 
 use Sersid\ContactBookBot\Contact\Domain\Entity\Address;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Contact;
+use Sersid\Shared\Event;
 
-final readonly class ContactChangedAddressEvent
+final readonly class ContactChangedAddressEvent implements Event
 {
     public function __construct(private Contact $contact, private Address $oldAddress)
     {

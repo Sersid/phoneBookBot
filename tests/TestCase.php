@@ -23,6 +23,10 @@ abstract class TestCase extends PHPUnit_TestCase
 
             // Container intentionally not compiled for tests.
 
+            // Set up dependencies
+            $dependencies = require __DIR__ . '/config/dependencies.php';
+            $dependencies($containerBuilder);
+
             // Set up repositories
             $repositories = require __DIR__ . '/config/repositories.php';
             $repositories($containerBuilder);

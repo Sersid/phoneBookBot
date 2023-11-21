@@ -17,7 +17,6 @@ final class Category implements AggregateRoot
         private Name $name,
         private Status $status = Status::TurnedOn
     ) {
-        $this->recordEvent(new Event\CategoryCreatedEvent($this));
     }
 
     public function getUuid(): Uuid

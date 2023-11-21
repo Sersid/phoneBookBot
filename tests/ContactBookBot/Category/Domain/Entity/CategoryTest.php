@@ -43,16 +43,6 @@ final class CategoryTest extends TestCase
         assertSame(Status::TurnedOn, self::$category->getStatus());
     }
 
-    #[TestDox('Тест создания события при создании категории')]
-    public function testEventOnCreated(): void
-    {
-        /** @var Event\CategoryCreatedEvent $event */
-        $event = self::$category->releaseEvents()[0];
-
-        assertInstanceOf(Event\CategoryCreatedEvent::class, $event);
-        assertSame(self::$category, $event->getCategory());
-    }
-
     #[TestDox('Тест попытки переименовать категорию в то же название')]
     public function testNotRename(): void
     {

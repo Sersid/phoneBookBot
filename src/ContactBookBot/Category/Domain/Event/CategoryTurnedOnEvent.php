@@ -5,8 +5,9 @@ namespace Sersid\ContactBookBot\Category\Domain\Event;
 
 use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Category\Domain\Entity\Status;
+use Sersid\Shared\Event;
 
-final readonly class CategoryTurnedOnEvent
+final readonly class CategoryTurnedOnEvent implements Event
 {
     public function __construct(private Category $category, private Status $oldStatus)
     {

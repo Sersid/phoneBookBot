@@ -16,9 +16,17 @@ final class InMemoryCategoryRepository implements CategoryRepositoryInterface
 
     public function __construct()
     {
-        $this->categories = new Categories();
-        $this->categories->add(new Category(Uuid::next(), new Name('Сантехник'), Status::TurnedOn));
-        $this->categories->add(new Category(Uuid::next(), new Name('Управляющая компания')));
+        $this->categories = new Categories([
+            new Category(
+                new Uuid('3fb7fe4b-77c6-4925-b958-f203c29adc34'),
+                new Name('Сантехники'),
+                Status::TurnedOn,
+            ),
+            new Category(
+                new Uuid('36a7d6f8-5bd8-4e92-b694-88aa1bce9e7b'),
+                new Name('Управляющая компания')
+            ),
+        ]);
     }
 
     public function add(Category $category): void
