@@ -63,17 +63,6 @@ final class CategoryTest extends TestCase
         assertSame($name, self::$category->getName());
     }
 
-    #[TestDox('Тест создания события при переименовании категории')]
-    public function testEventOnRenamed(): void
-    {
-        /** @var Event\CategoryRenamedEvent $event */
-        $event = self::$category->releaseEvents()[0];
-
-        assertInstanceOf(Event\CategoryRenamedEvent::class, $event);
-        assertSame(self::$category, $event->getCategory());
-        assertSame(self::$name, $event->getOldName());
-    }
-
     #[TestDox('Тест отключения категории')]
     public function testTurnOff(): void
     {

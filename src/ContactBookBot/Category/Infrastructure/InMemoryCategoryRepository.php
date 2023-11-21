@@ -35,11 +35,6 @@ final class InMemoryCategoryRepository implements CategoryRepositoryInterface
         $this->categories->add($category);
     }
 
-    public function getAll(): Categories
-    {
-        return $this->categories;
-    }
-
     public function getByUuid(Uuid $uuid): Category
     {
         if (!isset($this->categories[$uuid->getValue()])) {
@@ -47,5 +42,10 @@ final class InMemoryCategoryRepository implements CategoryRepositoryInterface
         }
 
         return $this->categories[$uuid->getValue()];
+    }
+
+    public function update(Category $category): void
+    {
+
     }
 }

@@ -40,7 +40,6 @@ final class Category implements AggregateRoot
             return;
         }
 
-        $this->recordEvent(new Event\CategoryRenamedEvent($this, $this->name));
         $this->name = $name;
     }
 

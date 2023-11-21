@@ -10,10 +10,10 @@ interface CategoryRepositoryInterface
 {
     public function add(Category $category): void;
 
-    public function getAll(): Categories;
-
     /**
      * @throws CategoryNotFoundException
      */
     public function getByUuid(Uuid $uuid): Category;
+
+    public function update(Category $category): void;
 }
