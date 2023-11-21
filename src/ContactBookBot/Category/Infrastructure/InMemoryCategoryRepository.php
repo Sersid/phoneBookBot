@@ -8,6 +8,7 @@ use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Category\Domain\Entity\CategoryRepositoryInterface;
 use Sersid\ContactBookBot\Category\Domain\Entity\Name;
 use Sersid\ContactBookBot\Category\Domain\Entity\Status;
+use Sersid\ContactBookBot\Category\Domain\Exception\CategoryNotFoundException;
 use Sersid\Shared\ValueObject\Uuid;
 
 final class InMemoryCategoryRepository implements CategoryRepositoryInterface
@@ -37,5 +38,14 @@ final class InMemoryCategoryRepository implements CategoryRepositoryInterface
     public function getAll(): Categories
     {
         return $this->categories;
+    }
+
+    public function getByUuid(Uuid $uuid): Category
+    {
+        if (!isset($this->categories[$uuid->getValue()])) {
+            throw new CategoryNotFoundException();
+        }
+
+        return $this->categories[$uuid->getValue()];
     }
 }
