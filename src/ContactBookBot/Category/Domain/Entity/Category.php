@@ -49,7 +49,6 @@ final class Category implements AggregateRoot
             return;
         }
 
-        $this->recordEvent(new Event\CategoryTurnedOffEvent($this, $this->status));
         $this->status = Status::TurnedOff;
     }
 

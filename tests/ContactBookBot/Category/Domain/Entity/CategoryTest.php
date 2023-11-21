@@ -71,17 +71,6 @@ final class CategoryTest extends TestCase
         assertSame(Status::TurnedOff, self::$category->getStatus());
     }
 
-    #[TestDox('Тест создания события при отключении категории')]
-    public function testEventOnTurnedOff(): void
-    {
-        /** @var Event\CategoryTurnedOffEvent $event */
-        $event = self::$category->releaseEvents()[0];
-
-        assertInstanceOf(Event\CategoryTurnedOffEvent::class, $event);
-        assertSame(self::$category, $event->getCategory());
-        assertSame(Status::TurnedOn, $event->getOldStatus());
-    }
-
     #[TestDox('Тест попытки повторного отключения категории')]
     public function testEventOnTurnedOffAgain(): void
     {
