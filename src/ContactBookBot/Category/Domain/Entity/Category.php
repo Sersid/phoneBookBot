@@ -3,15 +3,11 @@ declare(strict_types=1);
 
 namespace Sersid\ContactBookBot\Category\Domain\Entity;
 
-use Sersid\ContactBookBot\Category\Domain\Event;
-use Sersid\Shared\AggregateRoot;
-use Sersid\Shared\EventTrait;
+use DomainException;
 use Sersid\Shared\ValueObject\Uuid;
 
-final class Category implements AggregateRoot
+final class Category
 {
-    use EventTrait;
-
     public function __construct(
         private readonly Uuid $uuid,
         private Name $name,
@@ -37,7 +33,7 @@ final class Category implements AggregateRoot
     public function rename(Name $name): void
     {
         if ($this->name->isEqual($name)) {
-            return;
+            throw new DomainException('Название категории не изменилось');
         }
 
         $this->name = $name;
@@ -46,7 +42,7 @@ final class Category implements AggregateRoot
     public function turnOff(): void
     {
         if ($this->status->isTurnedOff()) {
-            return;
+            throw new DomainException('Категория уже выключена');
         }
 
         $this->status = Status::TurnedOff;
@@ -55,10 +51,9 @@ final class Category implements AggregateRoot
     public function turnOn(): void
     {
         if ($this->status->isTurnedOn()) {
-            return;
+            throw new DomainException('Категория уже включена');
         }
 
-        $this->recordEvent(new Event\CategoryTurnedOnEvent($this, $this->status));
         $this->status = Status::TurnedOn;
     }
 }

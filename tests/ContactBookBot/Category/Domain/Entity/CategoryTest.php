@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Category\Domain\Entity\Name;
 use Sersid\ContactBookBot\Category\Domain\Entity\Status;
-use Sersid\ContactBookBot\Category\Domain\Event;
 use Sersid\Shared\ValueObject\Uuid;
-use function PHPUnit\Framework\assertInstanceOf;
-use function PHPUnit\Framework\assertNotSame;
 use function PHPUnit\Framework\assertSame;
 
 #[TestDox('Тесты категории')]
@@ -48,9 +45,9 @@ final class CategoryTest extends TestCase
     {
         $name = new Name('Управляющая компания');
 
-        self::$category->rename($name);
+        $this->expectExceptionMessage('Название категории не изменилось');
 
-        assertNotSame($name, self::$category->getName());
+        self::$category->rename($name);
     }
 
     #[TestDox('Тест переименования категории')]
@@ -74,9 +71,9 @@ final class CategoryTest extends TestCase
     #[TestDox('Тест попытки повторного отключения категории')]
     public function testEventOnTurnedOffAgain(): void
     {
-        self::$category->turnOff();
+        $this->expectExceptionMessage('Категория уже выключена');
 
-        assertSame([], self::$category->releaseEvents());
+        self::$category->turnOff();
     }
 
     #[TestDox('Тест включения категории')]
@@ -87,22 +84,11 @@ final class CategoryTest extends TestCase
         assertSame(Status::TurnedOn, self::$category->getStatus());
     }
 
-    #[TestDox('Тест создания события при включении категории')]
-    public function testEventOnTurnedOn(): void
-    {
-        /** @var Event\CategoryTurnedOnEvent $event */
-        $event = self::$category->releaseEvents()[0];
-
-        assertInstanceOf(Event\CategoryTurnedOnEvent::class, $event);
-        assertSame(self::$category, $event->getCategory());
-        assertSame(Status::TurnedOff, $event->getOldStatus());
-    }
-
     #[TestDox('Тест попытки повторного включения категории')]
     public function testEventOnTurnedOnAgain(): void
     {
-        self::$category->turnOn();
+        $this->expectExceptionMessage('Категория уже включена');
 
-        assertSame([], self::$category->releaseEvents());
+        self::$category->turnOn();
     }
 }
