@@ -15,7 +15,8 @@
     "slim/psr7": "^1.6",
     "ramsey/uuid": "^4.7",
     "webmozart/assert": "^1.11",
-    "ramsey/collection": "^2.0"
+    "ramsey/collection": "^2.0",
+    "php-di/php-di": "^7.0"
   }
   ,
   "require-dev": {
