@@ -99,10 +99,9 @@ final class Contact implements AggregateRoot
     public function changeAddress(Address $address): void
     {
         if ($this->address->isEqual($address)) {
-            return;
+            throw new DomainException('Адрес контакта не изменился');
         }
 
-        $this->recordEvent(new Event\ContactChangedAddressEvent($this, $this->address));
         $this->address = $address;
     }
 

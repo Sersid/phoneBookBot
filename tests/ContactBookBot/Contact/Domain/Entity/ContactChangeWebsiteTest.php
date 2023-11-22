@@ -8,11 +8,23 @@ use PHPUnit\Framework\Attributes\TestDox;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Website;
 use Sersid\ContactBookBot\Contact\Domain\Event;
 use function PHPUnit\Framework\assertInstanceOf;
+use function PHPUnit\Framework\assertNotSame;
 use function PHPUnit\Framework\assertSame;
 
 #[TestDox('Тесты изменения вебсайта контакта')]
 final class ContactChangeWebsiteTest extends ContactTestCase
 {
+    #[TestDox('Тест попытки изменить вебсайт на тот же')]
+    public function testNoChangeWebsite(): void
+    {
+        $website = new Website();
+
+        self::$contact->changeWebsite($website);
+
+        assertNotSame(self::$contact->getWebsite(), $website);
+        assertSame([], self::$contact->releaseEvents());
+    }
+
     #[TestDox('Тест изменения вебсайта')]
     public function testChangeWebsite(): void
     {
