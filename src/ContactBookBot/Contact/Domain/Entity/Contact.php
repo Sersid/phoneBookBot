@@ -82,17 +82,18 @@ final class Contact implements AggregateRoot
     public function addPhone(Phone $phone): void
     {
         $this->phones->addPhone($phone);
-        $this->recordEvent(new Event\ContactPhoneAddedEvent($this, $phone));
     }
 
-    public function removePhone(int $index): void
+    public function removePhone(int $index): Phone
     {
         if (!isset($this->phones[$index])) {
             throw new LogicException('Телефон не найден');
         }
 
-        $this->recordEvent(new Event\ContactPhoneRemovedEvent($this, $this->phones[$index]));
+        $phone = $this->phones[$index];
         unset($this->phones[$index]);
+
+        return $phone;
     }
 
     public function changeAddress(Address $address): void
