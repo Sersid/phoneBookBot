@@ -8,16 +8,16 @@ use Webmozart\Assert\Assert;
 
 final readonly class Phone implements Stringable
 {
-    private string $title;
     private string $number;
+    private string $name;
 
-    public function __construct(string $number, string $title = '')
+    public function __construct(string $number, string $name = '')
     {
         $number = trim($number);
         Assert::notEmpty($number, 'Номер телефона обязателен для заполнения');
         $this->number = $number;
 
-        $this->title = trim($title);
+        $this->name = trim($name);
     }
 
     public function getNumber(): string
@@ -25,14 +25,14 @@ final readonly class Phone implements Stringable
         return $this->number;
     }
 
-    public function getTitle(): string
+    public function getName(): string
     {
-        return $this->title;
+        return $this->name;
     }
 
     public function __toString(): string
     {
-        return $this->number . (empty($this->title) ? '' : ' (' . $this->title . ')');
+        return $this->number . (empty($this->name) ? '' : ' (' . $this->name . ')');
     }
 
     public function isEqual(self $other): bool
