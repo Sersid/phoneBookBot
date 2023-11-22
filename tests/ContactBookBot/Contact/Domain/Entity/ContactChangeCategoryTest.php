@@ -3,14 +3,10 @@ declare(strict_types=1);
 
 namespace Tests\ContactBookBot\Contact\Domain\Entity;
 
-use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\TestDox;
 use Sersid\ContactBookBot\Category\Domain\Entity\Category;
-use Sersid\ContactBookBot\Contact\Domain\Event;
 use Sersid\ContactBookBot\Category\Domain\Entity\Name;
 use Sersid\Shared\ValueObject\Uuid;
-use function PHPUnit\Framework\assertInstanceOf;
-use function PHPUnit\Framework\assertNotSame;
 use function PHPUnit\Framework\assertSame;
 
 #[TestDox('Тесты изменения категории контакта')]
@@ -24,11 +20,9 @@ final class ContactChangeCategoryTest extends ContactTestCase
             new Name('Управляющая компания')
         );
 
-        self::$contact->releaseEvents();
-        self::$contact->changeCategory($category);
+        $this->expectExceptionMessage('Категория не изменилась');
 
-        assertNotSame(self::$contact->getCategory(), $category);
-        assertSame([], self::$contact->releaseEvents());
+        self::$contact->changeCategory($category);
     }
 
     #[TestDox('Тест изменения категории')]
@@ -39,17 +33,5 @@ final class ContactChangeCategoryTest extends ContactTestCase
         self::$contact->changeCategory($category);
 
         assertSame($category, self::$contact->getCategory());
-    }
-
-    #[TestDox('Тест создания события при изменении категории')]
-    #[Depends('testChangeCategory')]
-    public function testEventOnChangeCategory(): void
-    {
-        /** @var Event\ContactChangedCategoryEvent $event */
-        $event = self::$contact->releaseEvents()[0];
-
-        assertInstanceOf(Event\ContactChangedCategoryEvent::class, $event);
-        assertSame(self::$contact, $event->getContact());
-        assertSame(self::$category, $event->getOldCategory());
     }
 }

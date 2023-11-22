@@ -64,10 +64,9 @@ final class Contact implements AggregateRoot
     public function changeCategory(Category $category): void
     {
         if ($this->category->getUuid()->isEqual($category->getUuid())) {
-            return;
+            throw new DomainException('Категория не изменилась');
         }
 
-        $this->recordEvent(new Event\ContactChangedCategoryEvent($this, $this->category));
         $this->category = $category;
     }
 
