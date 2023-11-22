@@ -48,4 +48,9 @@ final class InMemoryCategoryRepository implements CategoryRepositoryInterface
     {
 
     }
+
+    public function getAll(): Categories
+    {
+        return $this->categories;
+    }
 }

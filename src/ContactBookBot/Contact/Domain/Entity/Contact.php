@@ -23,7 +23,6 @@ final class Contact implements AggregateRoot
         private Website $website = new Website(),
         private readonly Status $status = Status::Draft
     ) {
-        $this->recordEvent(new Event\ContactCreatedEvent($this));
     }
 
     public function getUuid(): Uuid
