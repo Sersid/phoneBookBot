@@ -6,15 +6,10 @@ namespace Sersid\ContactBookBot\Contact\Domain\Entity;
 use DomainException;
 use LogicException;
 use Sersid\ContactBookBot\Category\Domain\Entity\Category;
-use Sersid\ContactBookBot\Contact\Domain\Event;
-use Sersid\Shared\AggregateRoot;
-use Sersid\Shared\EventTrait;
 use Sersid\Shared\ValueObject\Uuid;
 
-final class Contact implements AggregateRoot
+final class Contact
 {
-    use EventTrait;
-
     public function __construct(
         private readonly Uuid $uuid,
         private Category $category,
@@ -108,10 +103,9 @@ final class Contact implements AggregateRoot
     public function changeWebsite(Website $website): void
     {
         if ($this->website->isEqual($website)) {
-            return;
+            throw new DomainException('Вебсайта контакта не изменился');
         }
 
-        $this->recordEvent(new Event\ContactChangedWebsiteEvent($this, $this->website));
         $this->website = $website;
     }
 }

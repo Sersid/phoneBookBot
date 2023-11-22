@@ -11,7 +11,6 @@ use Sersid\Shared\Event;
  */
 final class EventCollection extends AbstractCollection
 {
-
     public function getType(): string
     {
         return Event::class;

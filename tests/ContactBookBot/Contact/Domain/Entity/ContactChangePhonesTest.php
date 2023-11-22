@@ -23,7 +23,6 @@ final class ContactChangePhonesTest extends ContactTestCase
     #[TestDox('Тест добавления телефона')]
     public function testAddPhone(): void
     {
-        self::$contact->releaseEvents();
         self::$contact->addPhone(self::$phone);
 
         self::assertSame(self::$phone, self::$phones[0]);

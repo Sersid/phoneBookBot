@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace Tests\ContactBookBot\Contact\UseCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestDox;
 use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Category\Domain\Entity\Name as ContactName;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Contact;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Name;
 use Sersid\ContactBookBot\Contact\UseCase\GetByUuid;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\Framework\TestCase;
 use Sersid\Shared\ValueObject\Uuid;
 
 #[CoversClass(GetByUuid::class)]
