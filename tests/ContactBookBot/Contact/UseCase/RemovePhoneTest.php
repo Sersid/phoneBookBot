@@ -9,20 +9,25 @@ use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Category\Domain\Entity\Name as CategoryName;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Contact;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Name;
-use Sersid\ContactBookBot\Contact\Domain\Event\ContactPhoneAddedEvent;
-use Sersid\ContactBookBot\Contact\UseCase\AddPhone;
+use Sersid\ContactBookBot\Contact\Domain\Entity\Phone;
+use Sersid\ContactBookBot\Contact\Domain\Entity\Phones;
+use Sersid\ContactBookBot\Contact\Domain\Event\ContactPhoneRemovedEvent;
+use Sersid\ContactBookBot\Contact\UseCase\RemovePhone;
 use Sersid\Shared\ValueObject\Uuid;
 
-#[CoversClass(AddPhone::class)]
-#[TestDox('Тест use case: добавление телефона')]
-final class AddPhoneTest extends ContactTestCase
+#[CoversClass(RemovePhone::class)]
+#[TestDox('Тест use case: удаление телефона')]
+final class RemovePhoneTest extends ContactTestCase
 {
     public function test(): void
     {
         // arrange
         $uuid = '8db2f70d-f9ac-428a-ab21-6d42653e99e9';
-        $phoneName = 'Сантехник';
-        $phoneNumber = '88005553535';
+        $index = 1;
+        $phones = [
+            new Phone('88005553535'),
+            new Phone('222555'),
+        ];
         $contact = new Contact(
             new Uuid($uuid),
             new Category(
@@ -30,6 +35,7 @@ final class AddPhoneTest extends ContactTestCase
                 new CategoryName('Управляющая компания')
             ),
             new Name('Название контакта'),
+            new Phones($phones)
         );
 
         // assert
@@ -46,14 +52,12 @@ final class AddPhoneTest extends ContactTestCase
             ->method('dispatch')
             ->with(
                 self::callback(
-                    static fn(ContactPhoneAddedEvent $event) =>
-                        $event->getContact() === $contact
-                        && $event->getPhone()->getName() === $phoneName
-                        && $event->getPhone()->getNumber() === $phoneNumber
+                    static fn(ContactPhoneRemovedEvent $event) =>
+                        $event->getContact() === $contact && $event->getPhone() === $phones[$index]
                 )
             );
 
         // act
-        $this->get(AddPhone::class)->handle($uuid, $phoneName, $phoneNumber);
+        $this->get(RemovePhone::class)->handle($uuid, $index);
     }
 }
