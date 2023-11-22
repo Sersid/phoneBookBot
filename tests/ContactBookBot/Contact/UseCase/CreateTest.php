@@ -14,7 +14,7 @@ use Sersid\Shared\ValueObject\Uuid;
 
 #[CoversClass(Create::class)]
 #[TestDox('Тест use case: создание контакта')]
-final class CreateTest extends ContactUseCase
+final class CreateTest extends ContactTestCase
 {
     public function test(): void
     {

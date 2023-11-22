@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Sersid\ContactBookBot\Contact\Domain\Entity;
 
+use DomainException;
 use LogicException;
 use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Contact\Domain\Event;
@@ -73,10 +74,9 @@ final class Contact implements AggregateRoot
     public function rename(Name $name): void
     {
         if ($this->name->isEqual($name)) {
-            return;
+            throw new DomainException('Название контакта не изменилось');
         }
 
-        $this->recordEvent(new Event\ContactRenamedEvent($this, $this->name));
         $this->name = $name;
     }
 

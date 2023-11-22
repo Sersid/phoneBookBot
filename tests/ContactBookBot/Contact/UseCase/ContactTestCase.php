@@ -7,7 +7,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Sersid\ContactBookBot\Contact\Domain\Entity\ContactRepositoryInterface;
 use Tests\ContactBookBot\Category\UseCase\CategoryTestCase;
 
-abstract class ContactUseCase extends CategoryTestCase
+abstract class ContactTestCase extends CategoryTestCase
 {
     /**
      * @psalm-suppress PropertyNotSetInConstructor
