@@ -5,7 +5,6 @@ namespace Sersid\ContactBookBot\Category\UseCase;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Sersid\ContactBookBot\Category\Domain\Entity\CategoryRepositoryInterface;
-use Sersid\ContactBookBot\Category\Domain\Event\CategoryTurnedOffEvent;
 use Sersid\ContactBookBot\Category\Domain\Event\CategoryTurnedOnEvent;
 
 final readonly class TurnOn
