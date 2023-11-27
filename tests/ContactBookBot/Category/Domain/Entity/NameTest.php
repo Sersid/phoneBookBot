@@ -18,7 +18,7 @@ final class NameTest extends TestCase
     #[TestWith(['   '])]
     public function testEmptyValue(string $value): void
     {
-        $this->expectExceptionMessage('Название обязательно для заполнения');
+        $this->expectExceptionMessage('Название категории обязательно для заполнения');
 
         new Name($value);
     }

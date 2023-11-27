@@ -32,7 +32,7 @@ abstract class ContactTestCase extends TestCase
             new Uuid('f3190be0-ecd2-4cd0-bf09-9d999bd17620'),
             new CategoryName('Управляющая компания')
         );
-        self::$name = new Name();
+        self::$name = new Name('Диспетчер');
         self::$phones = new Phones();
         self::$address = new Address();
         self::$website = new Website();

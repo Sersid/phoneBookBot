@@ -108,4 +108,9 @@ final class Contact
 
         $this->website = $website;
     }
+
+    public function publish(): void
+    {
+        throw new DomainException('Необходимо указать контактную информацию');
+    }
 }

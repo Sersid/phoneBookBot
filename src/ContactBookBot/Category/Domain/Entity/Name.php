@@ -11,7 +11,7 @@ final readonly class Name extends StringValueObject
     public function __construct(string $value)
     {
         $value = trim($value);
-        Assert::notEmpty($value, 'Название обязательно для заполнения');
+        Assert::notEmpty($value, 'Название категории обязательно для заполнения');
         parent::__construct($value);
     }
 }

@@ -13,7 +13,7 @@ final class ContactRenameTest extends ContactTestCase
     #[TestDox('Тест попытки переименовать контакт в то же имя')]
     public function testNoRename(): void
     {
-        $newName = new Name();
+        $newName = new Name('Диспетчер');
 
         $this->expectExceptionMessage('Название контакта не изменилось');
 

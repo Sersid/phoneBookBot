@@ -10,7 +10,7 @@ use Sersid\ContactBookBot\Contact\Domain\Entity\Status;
 use function PHPUnit\Framework\assertSame;
 
 #[CoversClass(Contact::class)]
-#[TestDox('Тесты создания контакта')]
+#[TestDox('Тесты контакта')]
 final class ContactTest extends ContactTestCase
 {
     #[TestDox('Тест создания контакта')]
