@@ -70,4 +70,36 @@ final class ContactChangeStatusTest extends ContactTestCase
 
         assertSame(Status::Published, $contact->getStatus());
     }
+
+    #[TestDox('Тест повторного перемещения контакта в черновик')]
+    public function testToDraftAgain(): void
+    {
+        $this->expectExceptionMessage('Контакт уже перемещен в черновики');
+
+        self::$contact->toDraft();
+    }
+
+    #[TestDox('Тест снятия с публикации')]
+    public function testUnpublished(): void
+    {
+        self::$contact->unpublished();
+
+        assertSame(Status::Unpublished, self::$contact->getStatus());
+    }
+
+    #[TestDox('Тест повторного снятия с публикации')]
+    public function testUnpublishedAgain(): void
+    {
+        $this->expectExceptionMessage('Контакт уже снят с публикации');
+
+        self::$contact->unpublished();
+    }
+
+    #[TestDox('Тест перемещения контакта в черновик')]
+    public function testToDraft(): void
+    {
+        self::$contact->toDraft();
+
+        assertSame(Status::Draft, self::$contact->getStatus());
+    }
 }

@@ -109,6 +109,15 @@ final class Contact
         $this->website = $website;
     }
 
+    public function toDraft(): void
+    {
+        if ($this->status === Status::Draft) {
+            throw new DomainException('Контакт уже перемещен в черновики');
+        }
+
+        $this->status = Status::Draft;
+    }
+
     public function publish(): void
     {
         if ($this->status === Status::Published) {
@@ -120,5 +129,14 @@ final class Contact
         }
 
         $this->status = Status::Published;
+    }
+
+    public function unpublished(): void
+    {
+        if ($this->status === Status::Unpublished) {
+            throw new DomainException('Контакт уже снят с публикации');
+        }
+
+        $this->status = Status::Unpublished;
     }
 }
