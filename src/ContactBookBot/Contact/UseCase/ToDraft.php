@@ -5,7 +5,6 @@ namespace Sersid\ContactBookBot\Contact\UseCase;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Sersid\ContactBookBot\Contact\Domain\Entity\ContactRepositoryInterface;
-use Sersid\ContactBookBot\Contact\Domain\Event\ContactPublishedEvent;
 use Sersid\ContactBookBot\Contact\Domain\Event\ContactDraftEvent;
 
 final readonly class ToDraft
