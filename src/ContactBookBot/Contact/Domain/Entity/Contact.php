@@ -17,7 +17,7 @@ final class Contact
         private readonly Phones $phones = new Phones(),
         private Address $address = new Address(),
         private Website $website = new Website(),
-        private readonly Status $status = Status::Draft
+        private Status $status = Status::Draft
     ) {
     }
 
@@ -111,6 +111,10 @@ final class Contact
 
     public function publish(): void
     {
-        throw new DomainException('Необходимо указать контактную информацию');
+        if ($this->phones->isEmpty() && $this->address->isEmpty() && $this->website->isEmpty()) {
+            throw new DomainException('Необходимо указать контактную информацию');
+        }
+
+        $this->status = Status::Published;
     }
 }
