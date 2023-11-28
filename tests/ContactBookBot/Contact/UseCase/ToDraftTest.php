@@ -5,18 +5,18 @@ namespace Tests\ContactBookBot\Contact\UseCase;
 
 use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Category\Domain\Entity\Name as CategoryName;
-use Sersid\ContactBookBot\Contact\Domain\Entity\Address;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Contact;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Name;
-use Sersid\ContactBookBot\Contact\Domain\Event\ContactPublishedEvent;
-use Sersid\ContactBookBot\Contact\UseCase\Publish;
+use Sersid\ContactBookBot\Contact\Domain\Entity\Status;
+use Sersid\ContactBookBot\Contact\Domain\Event\ContactDraftEvent;
+use Sersid\ContactBookBot\Contact\UseCase\ToDraft;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use Sersid\Shared\ValueObject\Uuid;
 
-#[CoversClass(Publish::class)]
-#[TestDox('Тест use case: публикация контакта')]
-final class PublishTest extends ContactTestCase
+#[CoversClass(ToDraft::class)]
+#[TestDox('Тест use case: перемещение в черновик')]
+final class ToDraftTest extends ContactTestCase
 {
     public function test(): void
     {
@@ -29,7 +29,7 @@ final class PublishTest extends ContactTestCase
                 new CategoryName('Управляющая компания')
             ),
             name: new Name('Название контакта'),
-            address: new Address('ул. Пушкина'),
+            status: Status::Unpublished,
         );
         $oldStatus = $contact->getStatus();
 
@@ -46,12 +46,12 @@ final class PublishTest extends ContactTestCase
             ->method('dispatch')
             ->with(
                 self::callback(
-                    static fn(ContactPublishedEvent $event) =>
+                    static fn(ContactDraftEvent $event) =>
                         $event->getContact() === $contact && $event->getOldStatus() === $oldStatus
                 )
             );
 
         // act
-        $this->get(Publish::class)->handle($uuid);
+        $this->get(ToDraft::class)->handle($uuid);
     }
 }
