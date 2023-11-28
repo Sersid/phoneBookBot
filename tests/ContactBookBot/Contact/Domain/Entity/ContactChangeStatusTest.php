@@ -17,6 +17,22 @@ use function PHPUnit\Framework\assertSame;
 #[TestDox('Тесты изменения телефонов контакта')]
 final class ContactChangeStatusTest extends ContactTestCase
 {
+    #[TestDox('Тест попытки повторной публикации контакта')]
+    public function testPublishAgain(): void
+    {
+        $contact = new Contact(
+            uuid: self::$uuid,
+            category: self::$category,
+            name: self::$name,
+            phones: new Phones([new Phone('88005553535')]),
+            status: Status::Published,
+        );
+
+        $this->expectExceptionMessage('Контакт уже опубликован');
+
+        $contact->publish();
+    }
+
     #[TestDox('Тест попытки опубликовать контакт без контактных данных')]
     public function testPublishEmptyContact(): void
     {

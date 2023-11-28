@@ -111,6 +111,10 @@ final class Contact
 
     public function publish(): void
     {
+        if ($this->status === Status::Published) {
+            throw new DomainException('Контакт уже опубликован');
+        }
+
         if ($this->phones->isEmpty() && $this->address->isEmpty() && $this->website->isEmpty()) {
             throw new DomainException('Необходимо указать контактную информацию');
         }
