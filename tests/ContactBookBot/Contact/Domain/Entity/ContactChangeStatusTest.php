@@ -82,7 +82,7 @@ final class ContactChangeStatusTest extends ContactTestCase
     #[TestDox('Тест снятия с публикации')]
     public function testUnpublished(): void
     {
-        self::$contact->unpublished();
+        self::$contact->unpublish();
 
         assertSame(Status::Unpublished, self::$contact->getStatus());
     }
@@ -92,7 +92,7 @@ final class ContactChangeStatusTest extends ContactTestCase
     {
         $this->expectExceptionMessage('Контакт уже снят с публикации');
 
-        self::$contact->unpublished();
+        self::$contact->unpublish();
     }
 
     #[TestDox('Тест перемещения контакта в черновик')]

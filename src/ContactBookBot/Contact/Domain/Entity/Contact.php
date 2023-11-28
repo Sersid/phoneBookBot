@@ -131,7 +131,7 @@ final class Contact
         $this->status = Status::Published;
     }
 
-    public function unpublished(): void
+    public function unpublish(): void
     {
         if ($this->status === Status::Unpublished) {
             throw new DomainException('Контакт уже снят с публикации');
