@@ -3,13 +3,15 @@ declare(strict_types=1);
 
 namespace Tests\ContactBookBot\Category\UseCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\UsesClass;
 use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Category\Domain\Event\CategoryCreatedEvent;
 use Sersid\ContactBookBot\Category\UseCase\Create;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\TestDox;
 
 #[CoversClass(Create::class)]
+#[UsesClass(CategoryCreatedEvent::class)]
 #[TestDox('Тест use case: создание категории')]
 final class CreateTest extends CategoryTestCase
 {

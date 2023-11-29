@@ -3,17 +3,19 @@ declare(strict_types=1);
 
 namespace Tests\ContactBookBot\Category\UseCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\UsesClass;
 use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Category\Domain\Entity\Name;
 use Sersid\ContactBookBot\Category\Domain\Entity\Status;
 use Sersid\ContactBookBot\Category\Domain\Event\CategoryTurnedOffEvent;
 use Sersid\ContactBookBot\Category\UseCase\TurnOff;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\TestDox;
 use Sersid\Shared\ValueObject\Uuid;
 
 #[CoversClass(TurnOff::class)]
 #[TestDox('Тест use case: отключение категории')]
+#[UsesClass(CategoryTurnedOffEvent::class)]
 final class TurnOffTest extends CategoryTestCase
 {
     public function test(): void

@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Tests\ContactBookBot\Contact\Domain\Entity;
 
-use PHPUnit\Framework\Attributes\TestWith;
-use Sersid\ContactBookBot\Contact\Domain\Entity\MapLocation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
+use Sersid\ContactBookBot\Contact\Domain\Entity\MapLocation;
 use function PHPUnit\Framework\assertSame;
 use function PHPUnit\Framework\assertTrue;
 
@@ -15,6 +15,17 @@ use function PHPUnit\Framework\assertTrue;
 #[TestDox('Тесты расположения на карте')]
 final class MapLocationTest extends TestCase
 {
+    #[TestDox('Тест создания расположения на карте')]
+    #[TestWith([null, null])]
+    #[TestWith([51.6607, 39.2003])]
+    public function testCreate(float|null $lat, float|null $lon): void
+    {
+        $mapLocation = new MapLocation($lat, $lon);
+
+        assertSame($lat, $mapLocation->getLat());
+        assertSame($lon, $mapLocation->getLon());
+    }
+
     #[TestDox('Тест возможности не указывать расположения на карте')]
     public function testIsEmpty(): void
     {

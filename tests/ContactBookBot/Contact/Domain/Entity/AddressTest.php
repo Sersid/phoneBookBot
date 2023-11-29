@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Tests\ContactBookBot\Contact\Domain\Entity;
 
-use PHPUnit\Framework\Attributes\TestWith;
-use Sersid\ContactBookBot\Contact\Domain\Entity\Address;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
+use Sersid\ContactBookBot\Contact\Domain\Entity\Address;
 use Sersid\ContactBookBot\Contact\Domain\Entity\MapLocation;
 use function PHPUnit\Framework\assertSame;
 
@@ -15,6 +15,17 @@ use function PHPUnit\Framework\assertSame;
 #[TestDox('Тесты адреса')]
 final class AddressTest extends TestCase
 {
+    #[TestDox('Тест получения значений')]
+    public function testGetAddress(): void
+    {
+        $addressValue = 'ул. Пушкина';
+        $mapLocation = new MapLocation(51.6607, 39.2003);
+        $address = new Address($addressValue, $mapLocation);
+
+        assertSame($addressValue, $address->getAddress());
+        assertSame($mapLocation, $address->getMapLocation());
+    }
+
     #[TestDox('Тест заполнения')]
     #[TestWith([new Address(), true])]
     #[TestWith([new Address('  '), true])]

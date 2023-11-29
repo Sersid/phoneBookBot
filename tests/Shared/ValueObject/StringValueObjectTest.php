@@ -20,10 +20,43 @@ final class StringValueObjectTest extends TestCase
     #[TestWith(['My value', false])]
     public function testIsEmpty(string $value, bool $expected): void
     {
-        $stringValueObject = new ExampleStringValueObject($value);
+        $valueObject = new ExampleStringValueObject($value);
 
-        $result = $stringValueObject->isEmpty();
+        $result = $valueObject->isEmpty();
 
         assertSame($expected, $result);
+    }
+
+    #[TestDox('Тест получения значения')]
+    public function testGetValue(): void
+    {
+        $value = 'My value';
+
+        $valueObject = new ExampleStringValueObject($value);
+
+        assertSame($value, $valueObject->getValue());
+    }
+
+    #[TestDox('Тест эквивалентности объектов')]
+    #[TestWith([ 'My value',  'My value', true])]
+    #[TestWith([ 'My value',  'My not equal value', false])]
+    public function testIsEqual(string $value1, string $value2, bool $expected): void
+    {
+        $valueObject1 = new ExampleStringValueObject($value1);
+        $valueObject2 = new ExampleStringValueObject($value2);
+
+        $result = $valueObject1->isEqual($valueObject2);
+
+        assertSame($expected, $result);
+    }
+
+    #[TestDox('Тест __toString')]
+    public function testToString(): void
+    {
+        $value = 'My value';
+
+        $valueObject = new ExampleStringValueObject($value);
+
+        assertSame($value, (string)$valueObject);
     }
 }

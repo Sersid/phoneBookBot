@@ -3,16 +3,18 @@ declare(strict_types=1);
 
 namespace Tests\ContactBookBot\Category\UseCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\UsesClass;
 use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Category\Domain\Entity\Name;
 use Sersid\ContactBookBot\Category\Domain\Entity\Status;
 use Sersid\ContactBookBot\Category\Domain\Event\CategoryRenamedEvent;
 use Sersid\ContactBookBot\Category\UseCase\Rename;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\TestDox;
 use Sersid\Shared\ValueObject\Uuid;
 
 #[CoversClass(Rename::class)]
+#[UsesClass(CategoryRenamedEvent::class)]
 #[TestDox('Тест use case: переименование категории')]
 final class RenameTest extends CategoryTestCase
 {
