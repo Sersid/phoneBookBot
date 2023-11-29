@@ -5,8 +5,9 @@ namespace Sersid\ContactBookBot\Contact\Domain\Event;
 
 use Sersid\ContactBookBot\Contact\Domain\Entity\Contact;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Status;
+use Sersid\Shared\Event;
 
-final readonly class ContactPublishedEvent
+final readonly class ContactPublishedEvent implements Event
 {
     public function __construct(private Contact $contact, private  Status $oldStatus)
     {
