@@ -24,21 +24,6 @@ services:
     environment:
       XDEBUG_CONFIG: "remote_host=192.168.100.1 remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
-    depends_on:
-      - mariadb
-    networks:
-      - internal
-
-  mariadb:
-    image: mariadb:latest
-    container_name: mariadb
-    restart: always
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./docker/mariadb:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: example
     networks:
       - internal
 
