@@ -6,9 +6,6 @@ namespace Tests\ContactBookBot\Category\UseCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Sersid\ContactBookBot\Category\Domain\Entity\Category;
-use Sersid\ContactBookBot\Category\Domain\Entity\Name;
-use Sersid\ContactBookBot\Category\Domain\Entity\Status;
 use Sersid\ContactBookBot\Category\Domain\Event\CategoryRenamedEvent;
 use Sersid\ContactBookBot\Category\UseCase\Rename;
 use Sersid\Shared\ValueObject\Uuid;
@@ -23,11 +20,7 @@ final class RenameTest extends CategoryTestCase
         // assert
         $uuid = '3fb7fe4b-77c6-4925-b958-f203c29adc34';
         $name = 'Новое название категории';
-        $category = new Category(
-            new Uuid($uuid),
-            new Name('Предыдущее название категории'),
-            Status::TurnedOn,
-        );
+        $category = $this->categoryFixture->getWithUuid(new Uuid($uuid));
         $oldName = $category->getName();
 
         // assert

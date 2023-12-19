@@ -6,12 +6,8 @@ namespace Tests\ContactBookBot\Category\UseCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
-use Sersid\ContactBookBot\Category\Domain\Entity\Category;
-use Sersid\ContactBookBot\Category\Domain\Entity\Name;
-use Sersid\ContactBookBot\Category\Domain\Entity\Status;
 use Sersid\ContactBookBot\Category\Domain\Event\CategoryTurnedOffEvent;
 use Sersid\ContactBookBot\Category\UseCase\TurnOff;
-use Sersid\Shared\ValueObject\Uuid;
 
 #[CoversClass(TurnOff::class)]
 #[TestDox('Тест use case: отключение категории')]
@@ -21,12 +17,8 @@ final class TurnOffTest extends CategoryTestCase
     public function test(): void
     {
         // assert
-        $uuid = '3fb7fe4b-77c6-4925-b958-f203c29adc34';
-        $category = new Category(
-            new Uuid($uuid),
-            new Name('Управляющая компания'),
-            Status::TurnedOn,
-        );
+        $category = $this->categoryFixture->getTurnedOn();
+        $uuid = $category->getUuid()->getValue();
         $oldStatus = $category->getStatus();
 
         // assert

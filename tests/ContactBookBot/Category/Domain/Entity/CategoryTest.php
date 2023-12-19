@@ -10,85 +10,94 @@ use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Category\Domain\Entity\Name;
 use Sersid\ContactBookBot\Category\Domain\Entity\Status;
 use Sersid\Shared\ValueObject\Uuid;
+use Tests\ContactBookBot\Category\CategoryFixture;
 use function PHPUnit\Framework\assertSame;
 
 #[TestDox('Тесты категории')]
 #[CoversClass(Category::class)]
 final class CategoryTest extends TestCase
 {
-    private static Uuid $uuid;
-    private static Name $name;
-    private static Status $status;
-    private static Category $category;
+    protected CategoryFixture $categoryDirector;
 
-    public static function setUpBeforeClass(): void
+    protected function setUp(): void
     {
-        parent::setUpBeforeClass();
-
-        self::$uuid = Uuid::next();
-        self::$name = new Name('Управляющая компания');
-        self::$status = Status::TurnedOn;
-
-        self::$category = new Category(uuid: self::$uuid, name: self::$name, status: self::$status);
+        parent::setUp();
+        $this->categoryDirector = new CategoryFixture();
     }
 
     #[TestDox('Тест создания категории')]
     public function testCreate(): void
     {
-        assertSame(self::$uuid, self::$category->getUuid());
-        assertSame(self::$name, self::$category->getName());
-        assertSame(Status::TurnedOn, self::$category->getStatus());
+        $uuid = Uuid::next();
+        $name = new Name('Управляющая компания');
+        $status = Status::TurnedOn;
+
+        $category = new Category(uuid: $uuid, name: $name, status: $status);
+
+        assertSame($uuid, $category->getUuid());
+        assertSame($name, $category->getName());
+        assertSame($status, $category->getStatus());
     }
 
     #[TestDox('Тест попытки переименовать категорию в то же название')]
     public function testNotRename(): void
     {
         $name = new Name('Управляющая компания');
+        $category = $this->categoryDirector->getWithName($name);
 
         $this->expectExceptionMessage('Название категории не изменилось');
 
-        self::$category->rename($name);
+        $category->rename($name);
     }
 
     #[TestDox('Тест переименования категории')]
     public function testRename(): void
     {
+        $category = $this->categoryDirector->getDefault();
         $name = new Name('Новое название категории');
 
-        self::$category->rename($name);
+        $category->rename($name);
 
-        assertSame($name, self::$category->getName());
+        assertSame($name, $category->getName());
     }
 
     #[TestDox('Тест отключения категории')]
     public function testTurnOff(): void
     {
-        self::$category->turnOff();
+        $category = $this->categoryDirector->getTurnedOn();
 
-        assertSame(Status::TurnedOff, self::$category->getStatus());
+        $category->turnOff();
+
+        assertSame(Status::TurnedOff, $category->getStatus());
     }
 
     #[TestDox('Тест попытки повторного отключения категории')]
     public function testEventOnTurnedOffAgain(): void
     {
+        $category = $this->categoryDirector->getTurnedOff();
+
         $this->expectExceptionMessage('Категория уже выключена');
 
-        self::$category->turnOff();
+        $category->turnOff();
     }
 
     #[TestDox('Тест включения категории')]
     public function testTurnOn(): void
     {
-        self::$category->turnOn();
+        $category = $this->categoryDirector->getTurnedOff();
 
-        assertSame(Status::TurnedOn, self::$category->getStatus());
+        $category->turnOn();
+
+        assertSame(Status::TurnedOn, $category->getStatus());
     }
 
     #[TestDox('Тест попытки повторного включения категории')]
     public function testEventOnTurnedOnAgain(): void
     {
+        $category = $this->categoryDirector->getTurnedOn();
+
         $this->expectExceptionMessage('Категория уже включена');
 
-        self::$category->turnOn();
+        $category->turnOn();
     }
 }
