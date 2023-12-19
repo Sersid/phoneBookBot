@@ -11,6 +11,9 @@ final class CategoryBuilder
 
     public function build(): Category
     {
+        /**
+         * @psalm-suppress MixedArgument
+         */
         return new Category(...$this->args);
     }
 

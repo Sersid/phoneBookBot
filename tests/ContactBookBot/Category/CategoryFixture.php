@@ -39,14 +39,6 @@ final readonly class CategoryFixture
             ->build();
     }
 
-    public function getWithUuidAndName(Uuid $uuid, Name $name): Category
-    {
-        return $this->categoryBuilder
-            ->setUuid($uuid)
-            ->setName($name)
-            ->build();
-    }
-
     public function getTurnedOn(): Category
     {
         return $this->categoryBuilder
