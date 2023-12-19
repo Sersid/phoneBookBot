@@ -17,12 +17,12 @@ use function PHPUnit\Framework\assertSame;
 #[CoversClass(Category::class)]
 final class CategoryTest extends TestCase
 {
-    protected CategoryFixture $categoryDirector;
+    protected CategoryFixture $categoryFixture;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->categoryDirector = new CategoryFixture();
+        $this->categoryFixture = new CategoryFixture();
     }
 
     #[TestDox('Тест создания категории')]
@@ -43,7 +43,7 @@ final class CategoryTest extends TestCase
     public function testNotRename(): void
     {
         $name = new Name('Управляющая компания');
-        $category = $this->categoryDirector->getWithName($name);
+        $category = $this->categoryFixture->getWithName($name);
 
         $this->expectExceptionMessage('Название категории не изменилось');
 
@@ -53,7 +53,7 @@ final class CategoryTest extends TestCase
     #[TestDox('Тест переименования категории')]
     public function testRename(): void
     {
-        $category = $this->categoryDirector->getDefault();
+        $category = $this->categoryFixture->getDefault();
         $name = new Name('Новое название категории');
 
         $category->rename($name);
@@ -64,7 +64,7 @@ final class CategoryTest extends TestCase
     #[TestDox('Тест отключения категории')]
     public function testTurnOff(): void
     {
-        $category = $this->categoryDirector->getTurnedOn();
+        $category = $this->categoryFixture->getTurnedOn();
 
         $category->turnOff();
 
@@ -74,7 +74,7 @@ final class CategoryTest extends TestCase
     #[TestDox('Тест попытки повторного отключения категории')]
     public function testEventOnTurnedOffAgain(): void
     {
-        $category = $this->categoryDirector->getTurnedOff();
+        $category = $this->categoryFixture->getTurnedOff();
 
         $this->expectExceptionMessage('Категория уже выключена');
 
@@ -84,7 +84,7 @@ final class CategoryTest extends TestCase
     #[TestDox('Тест включения категории')]
     public function testTurnOn(): void
     {
-        $category = $this->categoryDirector->getTurnedOff();
+        $category = $this->categoryFixture->getTurnedOff();
 
         $category->turnOn();
 
@@ -94,7 +94,7 @@ final class CategoryTest extends TestCase
     #[TestDox('Тест попытки повторного включения категории')]
     public function testEventOnTurnedOnAgain(): void
     {
-        $category = $this->categoryDirector->getTurnedOn();
+        $category = $this->categoryFixture->getTurnedOn();
 
         $this->expectExceptionMessage('Категория уже включена');
 
