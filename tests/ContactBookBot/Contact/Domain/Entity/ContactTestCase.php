@@ -12,9 +12,13 @@ use Sersid\ContactBookBot\Contact\Domain\Entity\Name;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Phones;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Website;
 use Sersid\Shared\ValueObject\Uuid;
+use Tests\ContactBookBot\Category\CategoryFixture;
+use Tests\ContactBookBot\Contact\ContactFixture;
 
 abstract class ContactTestCase extends TestCase
 {
+    protected CategoryFixture $categoryFixture;
+    protected ContactFixture $contactFixture;
     protected static Uuid $uuid;
     protected static Category $category;
     protected static Name $name;
@@ -45,5 +49,13 @@ abstract class ContactTestCase extends TestCase
             address: self::$address,
             website: self::$website,
         );
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->categoryFixture = new CategoryFixture();
+        $this->contactFixture = new ContactFixture();
     }
 }
