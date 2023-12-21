@@ -6,8 +6,10 @@ namespace Tests\ContactBookBot\Category\UseCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Sersid\ContactBookBot\Category\Domain\Entity\Status;
 use Sersid\ContactBookBot\Category\Domain\Event\CategoryTurnedOnEvent;
 use Sersid\ContactBookBot\Category\UseCase\TurnOn;
+use function PHPUnit\Framework\assertSame;
 
 #[CoversClass(TurnOn::class)]
 #[UsesClass(CategoryTurnedOnEvent::class)]
@@ -41,5 +43,8 @@ final class TurnOnTest extends CategoryTestCase
 
         // act
         $this->get(TurnOn::class)->handle($uuid);
+
+        // assert
+        assertSame(Status::TurnedOn, $category->getStatus());
     }
 }

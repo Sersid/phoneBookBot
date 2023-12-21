@@ -6,8 +6,10 @@ namespace Tests\ContactBookBot\Category\UseCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Sersid\ContactBookBot\Category\Domain\Entity\Status;
 use Sersid\ContactBookBot\Category\Domain\Event\CategoryTurnedOffEvent;
 use Sersid\ContactBookBot\Category\UseCase\TurnOff;
+use function PHPUnit\Framework\assertSame;
 
 #[CoversClass(TurnOff::class)]
 #[TestDox('Тест use case: отключение категории')]
@@ -41,5 +43,8 @@ final class TurnOffTest extends CategoryTestCase
 
         // act
         $this->get(TurnOff::class)->handle($uuid);
+
+        // assert
+        assertSame(Status::TurnedOff, $category->getStatus());
     }
 }

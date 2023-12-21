@@ -12,6 +12,7 @@ use Sersid\ContactBookBot\Contact\UseCase\Rename;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use Sersid\Shared\ValueObject\Uuid;
+use function PHPUnit\Framework\assertSame;
 
 #[CoversClass(Rename::class)]
 #[TestDox('Тест use case: переименование контакта')]
@@ -52,5 +53,8 @@ final class RenameTest extends ContactTestCase
 
         // act
         $this->get(Rename::class)->handle($uuid, $name);
+
+        // assert
+        assertSame($name, $contact->getName()->getValue());
     }
 }

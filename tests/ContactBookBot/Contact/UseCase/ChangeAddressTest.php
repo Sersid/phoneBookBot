@@ -9,10 +9,12 @@ use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Category\Domain\Entity\Name as CategoryName;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Address;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Contact;
+use Sersid\ContactBookBot\Contact\Domain\Entity\MapLocation;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Name;
 use Sersid\ContactBookBot\Contact\Domain\Event\ContactChangedAddressEvent;
 use Sersid\ContactBookBot\Contact\UseCase\ChangeAddress;
 use Sersid\Shared\ValueObject\Uuid;
+use function PHPUnit\Framework\assertEquals;
 
 #[CoversClass(ChangeAddress::class)]
 #[TestDox('Тест use case: изменение адреса контакта')]
@@ -58,5 +60,8 @@ final class ChangeAddressTest extends ContactTestCase
 
         // act
         $this->get(ChangeAddress::class)->handle($uuid, $address, $lat, $lon);
+
+        // assert
+        assertEquals(new Address($address, new MapLocation($lat, $lon)), $contact->getAddress());
     }
 }

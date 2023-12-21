@@ -12,6 +12,7 @@ use Sersid\ContactBookBot\Contact\UseCase\ChangeCategory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use Sersid\Shared\ValueObject\Uuid;
+use function PHPUnit\Framework\assertSame;
 
 #[CoversClass(ChangeCategory::class)]
 #[TestDox('Тест use case: изменение категории контакта')]
@@ -62,5 +63,8 @@ final class ChangeCategoryTest extends ContactTestCase
 
         // act
         $this->get(ChangeCategory::class)->handle($uuid, $categoryUuid);
+
+        // assert
+        assertSame($categoryUuid, $contact->getCategory()->getUuid()->getValue());
     }
 }

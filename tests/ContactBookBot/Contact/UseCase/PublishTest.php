@@ -8,11 +8,13 @@ use Sersid\ContactBookBot\Category\Domain\Entity\Name as CategoryName;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Address;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Contact;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Name;
+use Sersid\ContactBookBot\Contact\Domain\Entity\Status;
 use Sersid\ContactBookBot\Contact\Domain\Event\ContactPublishedEvent;
 use Sersid\ContactBookBot\Contact\UseCase\Publish;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use Sersid\Shared\ValueObject\Uuid;
+use function PHPUnit\Framework\assertSame;
 
 #[CoversClass(Publish::class)]
 #[TestDox('Тест use case: публикация контакта')]
@@ -53,5 +55,8 @@ final class PublishTest extends ContactTestCase
 
         // act
         $this->get(Publish::class)->handle($uuid);
+
+        // assert
+        assertSame(Status::Published, $contact->getStatus());
     }
 }

@@ -13,6 +13,7 @@ use Sersid\ContactBookBot\Contact\Domain\Entity\Status;
 use Sersid\ContactBookBot\Contact\Domain\Event\ContactUnpublishedEvent;
 use Sersid\ContactBookBot\Contact\UseCase\Unpublish;
 use Sersid\Shared\ValueObject\Uuid;
+use function PHPUnit\Framework\assertSame;
 
 #[CoversClass(Unpublish::class)]
 #[TestDox('Тест use case: снятие с публикации')]
@@ -53,5 +54,8 @@ final class UnpublishTest extends ContactTestCase
 
         // act
         $this->get(Unpublish::class)->handle($uuid);
+
+        // assert
+        assertSame(Status::Unpublished, $contact->getStatus());
     }
 }

@@ -25,7 +25,7 @@ final readonly class MapLocation
 
     public function isEmpty(): bool
     {
-        return $this->lat === null || $this->lon === null;
+        return $this->lat === null && $this->lon === null;
     }
 
     public function isEqual(self $other): bool

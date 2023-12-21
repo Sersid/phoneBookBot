@@ -30,12 +30,12 @@ final class PhoneTest extends TestCase
     public function testCreate(): void
     {
         $number = '88005553535';
-        $name = 'Диспетчер';
+        $name = '   Диспетчер   ';
 
         $phone = new Phone($number, $name);
 
         assertSame($number, $phone->getNumber());
-        assertSame($name, $phone->getName());
+        assertSame('Диспетчер', $phone->getName());
     }
 
     #[TestDox('Тест преобразования в строку (number: "$number", title: "$title", expected: "$expected")')]

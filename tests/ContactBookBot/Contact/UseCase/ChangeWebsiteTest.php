@@ -12,6 +12,7 @@ use Sersid\ContactBookBot\Contact\Domain\Entity\Name;
 use Sersid\ContactBookBot\Contact\Domain\Event\ContactChangedWebsiteEvent;
 use Sersid\ContactBookBot\Contact\UseCase\ChangeWebsite;
 use Sersid\Shared\ValueObject\Uuid;
+use function PHPUnit\Framework\assertSame;
 
 #[CoversClass(ChangeWebsite::class)]
 #[TestDox('Тест use case: изменение вебсайта')]
@@ -54,5 +55,8 @@ final class ChangeWebsiteTest extends ContactTestCase
 
         // act
         $this->get(ChangeWebsite::class)->handle($uuid, $website);
+
+        // assert
+        assertSame($website, $contact->getWebsite()->getValue());
     }
 }

@@ -9,7 +9,6 @@ use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Sersid\ContactBookBot\Contact\Domain\Entity\MapLocation;
 use function PHPUnit\Framework\assertSame;
-use function PHPUnit\Framework\assertTrue;
 
 #[CoversClass(MapLocation::class)]
 #[TestDox('Тесты расположения на карте')]
@@ -26,14 +25,16 @@ final class MapLocationTest extends TestCase
         assertSame($lon, $mapLocation->getLon());
     }
 
-    #[TestDox('Тест возможности не указывать расположения на карте')]
-    public function testIsEmpty(): void
+    #[TestDox('Тест заполнения координат')]
+    #[TestWith([null, null, true])]
+    #[TestWith([51.6607, 39.2003, false])]
+    public function testIsEmpty(float|null $lat, float|null $lon, bool $expected): void
     {
-        $mapLocation = new MapLocation();
+        $mapLocation = new MapLocation($lat, $lon);
 
         $result = $mapLocation->isEmpty();
 
-        assertTrue($result);
+        assertSame($expected, $result);
     }
 
     #[TestDox('Тест создания корректного расположения на карте (lat: $lat, lon: $lon, expected: $expectedMessage)')]

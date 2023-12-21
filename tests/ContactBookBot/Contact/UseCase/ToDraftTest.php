@@ -13,6 +13,7 @@ use Sersid\ContactBookBot\Contact\UseCase\ToDraft;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestDox;
 use Sersid\Shared\ValueObject\Uuid;
+use function PHPUnit\Framework\assertSame;
 
 #[CoversClass(ToDraft::class)]
 #[TestDox('Тест use case: перемещение в черновик')]
@@ -53,5 +54,8 @@ final class ToDraftTest extends ContactTestCase
 
         // act
         $this->get(ToDraft::class)->handle($uuid);
+
+        // assert
+        assertSame(Status::Draft, $contact->getStatus());
     }
 }

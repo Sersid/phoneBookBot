@@ -9,9 +9,11 @@ use Sersid\ContactBookBot\Category\Domain\Entity\Category;
 use Sersid\ContactBookBot\Category\Domain\Entity\Name as CategoryName;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Contact;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Name;
+use Sersid\ContactBookBot\Contact\Domain\Entity\Phone;
 use Sersid\ContactBookBot\Contact\Domain\Event\ContactPhoneAddedEvent;
 use Sersid\ContactBookBot\Contact\UseCase\AddPhone;
 use Sersid\Shared\ValueObject\Uuid;
+use function PHPUnit\Framework\assertEquals;
 
 #[CoversClass(AddPhone::class)]
 #[TestDox('Тест use case: добавление телефона')]
@@ -55,5 +57,8 @@ final class AddPhoneTest extends ContactTestCase
 
         // act
         $this->get(AddPhone::class)->handle($uuid, $phoneName, $phoneNumber);
+
+        // assert
+        assertEquals(new Phone($phoneNumber, $phoneName), $contact->getPhones()->last());
     }
 }

@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use Sersid\ContactBookBot\Category\Domain\Event\CategoryRenamedEvent;
 use Sersid\ContactBookBot\Category\UseCase\Rename;
 use Sersid\Shared\ValueObject\Uuid;
+use function PHPUnit\Framework\assertSame;
 
 #[CoversClass(Rename::class)]
 #[UsesClass(CategoryRenamedEvent::class)]
@@ -43,5 +44,8 @@ final class RenameTest extends CategoryTestCase
 
         // act
         $this->get(Rename::class)->handle($uuid, $name);
+
+        // assert
+        assertSame($name, $category->getName()->getValue());
     }
 }
