@@ -59,4 +59,18 @@ final class ContactBuilder
 
         return $this;
     }
+
+    public function setStatus(Status $status): self
+    {
+        $this->args['status'] = $status;
+
+        return $this;
+    }
+
+    public function mergeArgs(array $args): self
+    {
+        $this->args = array_merge($this->args, $args);
+
+        return $this;
+    }
 }

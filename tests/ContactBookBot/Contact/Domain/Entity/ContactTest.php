@@ -4,23 +4,39 @@ declare(strict_types=1);
 namespace Tests\ContactBookBot\Contact\Domain\Entity;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\TestCase;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Address;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Contact;
+use Sersid\ContactBookBot\Contact\Domain\Entity\MapLocation;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Name;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Phone;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Phones;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Status;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Website;
 use Sersid\Shared\ValueObject\Uuid;
+use Tests\ContactBookBot\Category\CategoryFixture;
+use Tests\ContactBookBot\Contact\ContactFixture;
 use function PHPUnit\Framework\assertSame;
 use function PHPUnit\Framework\assertTrue;
 
 #[CoversClass(Contact::class)]
 #[TestDox('Тесты контакта')]
-final class ContactTest extends ContactTestCase
+final class ContactTest extends TestCase
 {
+    protected CategoryFixture $categoryFixture;
+    protected ContactFixture $contactFixture;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->categoryFixture = new CategoryFixture();
+        $this->contactFixture = new ContactFixture();
+    }
+
     #[TestDox('Тест создания контакта')]
     public function testCreate(): void
     {
@@ -179,5 +195,94 @@ final class ContactTest extends ContactTestCase
         $contact->changeWebsite($website);
 
         assertSame($contact->getWebsite(), $website);
+    }
+
+    #[TestDox('Тест попытки повторной публикации контакта')]
+    public function testPublishAgain(): void
+    {
+        $contact = $this->contactFixture->getPublished();
+
+        $this->expectExceptionMessage('Контакт уже опубликован');
+
+        $contact->publish();
+    }
+
+    #[TestDox('Тест попытки опубликовать контакт без контактных данных')]
+    public function testPublishEmptyContact(): void
+    {
+        $contact = $this->contactFixture->getDefault();
+
+        $this->expectExceptionMessage('Необходимо указать контактную информацию');
+
+        $contact->publish();
+    }
+
+    public static function publishDataProvider(): array
+    {
+        return [
+            'есть адрес' => [
+                ['address' => new Address('ул. Пушкина, д. 1')]
+            ],
+            'есть координаты на карте' => [
+                ['address' => new Address('', new MapLocation(51.6607, 39.2003))]
+            ],
+            'есть вебсайт' => [
+                ['website' => new Website('www.example.com')]
+            ],
+            'есть телефон' => [
+                ['phones' => new Phones([new Phone('88005553535')])]
+            ],
+        ];
+    }
+
+    #[TestDox('Тест публикации контакта')]
+    #[DataProvider('publishDataProvider')]
+    public function testPublish(array $arrange): void
+    {
+        $contact = $this->contactFixture->getWithArgs($arrange);
+
+        $contact->publish();
+
+        assertSame(Status::Published, $contact->getStatus());
+    }
+
+    #[TestDox('Тест повторного перемещения контакта в черновик')]
+    public function testToDraftAgain(): void
+    {
+        $contact = $this->contactFixture->getDraft();
+
+        $this->expectExceptionMessage('Контакт уже перемещен в черновики');
+
+        $contact->toDraft();
+    }
+
+    #[TestDox('Тест снятия с публикации')]
+    public function testUnpublished(): void
+    {
+        $contact = $this->contactFixture->getPublished();
+
+        $contact->unpublish();
+
+        assertSame(Status::Unpublished, $contact->getStatus());
+    }
+
+    #[TestDox('Тест повторного снятия с публикации')]
+    public function testUnpublishedAgain(): void
+    {
+        $contact = $this->contactFixture->getUnpublished();
+
+        $this->expectExceptionMessage('Контакт уже снят с публикации');
+
+        $contact->unpublish();
+    }
+
+    #[TestDox('Тест перемещения контакта в черновик')]
+    public function testToDraft(): void
+    {
+        $contact = $this->contactFixture->getPublished();
+
+        $contact->toDraft();
+
+        assertSame(Status::Draft, $contact->getStatus());
     }
 }

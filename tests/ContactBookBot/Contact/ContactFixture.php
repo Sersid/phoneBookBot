@@ -9,6 +9,7 @@ use Sersid\ContactBookBot\Contact\Domain\Entity\Contact;
 use Sersid\ContactBookBot\Contact\Domain\Entity\ContactBuilder;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Name;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Phones;
+use Sersid\ContactBookBot\Contact\Domain\Entity\Status;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Website;
 use Sersid\Shared\ValueObject\Uuid;
 use Tests\ContactBookBot\Category\CategoryFixture;
@@ -62,6 +63,35 @@ final readonly class ContactFixture
     {
         return $this->contactBuilder
             ->setWebsite($website)
+            ->build();
+    }
+
+    public function getWithStatus(Status $status): Contact
+    {
+        return $this->contactBuilder
+            ->setStatus($status)
+            ->build();
+    }
+
+    public function getPublished(): Contact
+    {
+        return $this->getWithStatus(Status::Published);
+    }
+
+    public function getDraft(): Contact
+    {
+        return $this->getWithStatus(Status::Draft);
+    }
+
+    public function getUnpublished(): Contact
+    {
+        return $this->getWithStatus(Status::Unpublished);
+    }
+
+    public function getWithArgs(array $args): Contact
+    {
+        return $this->contactBuilder
+            ->mergeArgs($args)
             ->build();
     }
 }
