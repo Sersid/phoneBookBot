@@ -5,7 +5,6 @@ namespace Tests\ContactBookBot\Contact\Domain\Entity;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use Sersid\ContactBookBot\Contact\Domain\Entity\Address;
@@ -106,30 +105,6 @@ final class ContactTest extends TestCase
         assertSame($contact->getName(), $newName);
     }
 
-    #[TestDox('Тест добавления телефона')]
-    public function testAddPhone(): void
-    {
-        $contact = $this->contactFixture->getDefault();
-        $phone = new Phone('88005553535', 'Диспетчер');
-
-        $contact->addPhone($phone);
-
-        assertSame($phone, $contact->getPhones()[0]);
-    }
-
-    #[TestDox('Тест попытки добавления существующего телефона')]
-    public function testAddDuplicatePhone(): void
-    {
-        $contact = $this->contactFixture->getWithPhones(new Phones([
-            new Phone('88005553535', 'Диспетчер'),
-            new Phone('88005557575', 'Директор'),
-        ]));
-
-        $this->expectExceptionMessage('Номер телефона уже существует');
-
-        $contact->addPhone(new Phone('88005553535', 'Диспетчер'));
-    }
-
     #[TestDox('Тест удаления телефона')]
     public function testRemovePhone(): void
     {
@@ -143,7 +118,6 @@ final class ContactTest extends TestCase
     }
 
     #[TestDox('Тест попытки удаления несуществующего телефона')]
-    #[Depends('testRemovePhone')]
     public function testRemoveUndefinedPhone(): void
     {
         $contact = $this->contactFixture->getDefault();

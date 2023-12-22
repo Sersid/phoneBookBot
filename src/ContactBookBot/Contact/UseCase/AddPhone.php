@@ -22,7 +22,7 @@ final readonly class AddPhone
     {
         $contact = $this->getByUuid->handle($uuid);
         $phone = new Phone($phoneNumber, $phoneName);
-        $contact->addPhone($phone);
+        $contact->getPhones()->addPhone($phone);
 
         $this->repository->update($contact);
 

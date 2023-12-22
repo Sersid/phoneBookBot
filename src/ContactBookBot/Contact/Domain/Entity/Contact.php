@@ -74,11 +74,6 @@ final class Contact
         $this->name = $name;
     }
 
-    public function addPhone(Phone $phone): void
-    {
-        $this->phones->addPhone($phone);
-    }
-
     public function removePhone(int $index): Phone
     {
         if (!isset($this->phones[$index])) {

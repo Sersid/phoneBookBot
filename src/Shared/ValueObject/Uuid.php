@@ -9,7 +9,7 @@ final readonly class Uuid extends StringValueObject
 {
     public function __construct(string $value)
     {
-        Assert::uuid($value);
+        Assert::uuid($value, 'Некорректный uuid');
         parent::__construct($value);
     }
 
